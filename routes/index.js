@@ -7,6 +7,7 @@ const productsRouter = require("./products");
 const ordersRouter = require("./orders");
 const uploadRouter = require("./upload");
 const paymentRouter = require("./payment");
+const discountsRouter = require("./discounts");
 
 // Public routes (no authentication required)
 router.post("/signup", validateSignup, createUser);
@@ -23,6 +24,9 @@ router.use("/upload", uploadRouter);
 
 // Payment routes
 router.use("/payment", paymentRouter);
+
+// Discount routes
+router.use("/discounts", discountsRouter);
 
 // Protected routes (require authentication)
 router.use("/users", auth, usersRouter);

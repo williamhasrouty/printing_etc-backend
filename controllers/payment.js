@@ -1,28 +1,122 @@
 const stripe = require("stripe")(require("../config/config").STRIPE_SECRET_KEY);
-const { BadRequestError } = require("../errors/errors");
+const Order = require("../models/order");
+const { BadRequestError, NotFoundError } = require("../errors/errors");
+const { NODE_ENV } = require("../config/config");
 
-// Create payment intent
-const createPaymentIntent = async (req, res, next) => {
+/**
+ * SECURE PAYMENT FLOW:
+ * 1. Frontend creates order (status: pending)
+ * 2. Frontend requests checkout session with orderId
+ * 3. Backend creates Stripe Checkout Session
+ * 4. User pays via Stripe's hosted UI
+ * 5. Stripe webhook confirms payment
+ * 6. Backend updates order status (ONLY via webhook)
+ *
+ * ⚠️ NEVER trust frontend to confirm payment!
+ */
+
+// Create Stripe Checkout Session
+const createCheckoutSession = async (req, res, next) => {
   try {
-    const { amount, currency = "usd", metadata = {} } = req.body;
+    const { orderId } = req.body;
 
-    if (!amount || amount <= 0) {
-      throw new BadRequestError("Invalid amount");
+    if (!orderId) {
+      throw new BadRequestError("Order ID required");
     }
 
-    // Create payment intent
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(amount * 100), // Convert to cents
-      currency,
-      automatic_payment_methods: {
-        enabled: true,
+    // Verify order exists and is pending payment
+    const order = await Order.findById(orderId).populate("items.product");
+
+    if (!order) {
+      throw new NotFoundError("Order not found");
+    }
+
+    if (order.status !== "pending") {
+      throw new BadRequestError("Order is not pending payment");
+    }
+
+    // Build line items for Stripe from order items
+    const lineItems = order.items.map((item) => ({
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: item.productName,
+          description: item.selectedOptions
+            ? Object.entries(item.selectedOptions)
+                .filter(([_, value]) => value)
+                .map(([key, value]) => `${key}: ${value}`)
+                .join(", ")
+            : undefined,
+          images: item.product?.imageUrl ? [item.product.imageUrl] : undefined,
+        },
+        unit_amount: Math.round(item.price * 100), // Convert to cents
       },
-      metadata,
+      quantity: item.quantity,
+    }));
+
+    // Add shipping as line item if > 0
+    if (order.shipping > 0) {
+      lineItems.push({
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: "Shipping",
+          },
+          unit_amount: Math.round(order.shipping * 100),
+        },
+        quantity: 1,
+      });
+    }
+
+    // Add tax as line item if > 0
+    if (order.tax > 0) {
+      lineItems.push({
+        price_data: {
+          currency: "usd",
+          product_data: {
+            name: "Tax",
+          },
+          unit_amount: Math.round(order.tax * 100),
+        },
+        quantity: 1,
+      });
+    }
+
+    // Success and cancel URLs
+    const successUrl =
+      NODE_ENV === "production"
+        ? `${process.env.FRONTEND_URL}/order/success?session_id={CHECKOUT_SESSION_ID}`
+        : `http://localhost:3000/order/success?session_id={CHECKOUT_SESSION_ID}`;
+
+    const cancelUrl =
+      NODE_ENV === "production"
+        ? `${process.env.FRONTEND_URL}/order/cancel?order_id=${orderId}`
+        : `http://localhost:3000/order/cancel?order_id=${orderId}`;
+
+    // Create Stripe Checkout Session
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: lineItems,
+      mode: "payment",
+      success_url: successUrl,
+      cancel_url: cancelUrl,
+      client_reference_id: orderId.toString(),
+      metadata: {
+        orderId: orderId.toString(),
+        orderNumber: order.orderNumber,
+      },
+      customer_email: order.user
+        ? undefined // Will be filled from customer account
+        : order.guestInfo?.email,
     });
 
+    // Store session ID in order (for reference only, not for verification!)
+    order.paymentInfo.stripeSessionId = session.id;
+    await order.save();
+
     res.status(200).send({
-      clientSecret: paymentIntent.client_secret,
-      paymentIntentId: paymentIntent.id,
+      sessionId: session.id,
+      url: session.url, // Redirect user to this URL
     });
   } catch (err) {
     if (
@@ -36,21 +130,21 @@ const createPaymentIntent = async (req, res, next) => {
   }
 };
 
-// Confirm payment
-const confirmPayment = async (req, res, next) => {
+// Get checkout session status (for checking payment completion)
+const getCheckoutSession = async (req, res, next) => {
   try {
-    const { paymentIntentId } = req.body;
+    const { sessionId } = req.params;
 
-    if (!paymentIntentId) {
-      throw new BadRequestError("Payment intent ID required");
+    if (!sessionId) {
+      throw new BadRequestError("Session ID required");
     }
 
-    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
 
     res.status(200).send({
-      status: paymentIntent.status,
-      amount: paymentIntent.amount / 100,
-      currency: paymentIntent.currency,
+      status: session.payment_status,
+      customerEmail: session.customer_email,
+      amountTotal: session.amount_total / 100,
     });
   } catch (err) {
     if (err.type === "StripeInvalidRequestError") {
@@ -61,7 +155,7 @@ const confirmPayment = async (req, res, next) => {
   }
 };
 
-// Handle webhook events
+// Handle Stripe webhook events (CRITICAL - This is where payment is ACTUALLY confirmed)
 const handleWebhook = async (req, res, next) => {
   const sig = req.headers["stripe-signature"];
   const { STRIPE_WEBHOOK_SECRET } = require("../config/config");
@@ -69,54 +163,117 @@ const handleWebhook = async (req, res, next) => {
   let event;
 
   try {
+    // Verify webhook signature (CRITICAL for security)
     event = stripe.webhooks.constructEvent(
       req.body,
       sig,
       STRIPE_WEBHOOK_SECRET,
     );
   } catch (err) {
+    console.error("⚠️  Webhook signature verification failed:", err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
   // Handle the event
-  switch (event.type) {
-    case "payment_intent.succeeded":
-      const paymentIntent = event.data.object;
-      console.log("PaymentIntent was successful:", paymentIntent.id);
-      // Update order status here
-      break;
-    case "payment_intent.payment_failed":
-      const failedPayment = event.data.object;
-      console.log("PaymentIntent failed:", failedPayment.id);
-      // Handle failed payment
-      break;
-    case "charge.refunded":
-      const refund = event.data.object;
-      console.log("Charge was refunded:", refund.id);
-      // Handle refund
-      break;
-    default:
-      console.log(`Unhandled event type ${event.type}`);
-  }
+  try {
+    switch (event.type) {
+      case "checkout.session.completed":
+        const session = event.data.object;
 
-  res.json({ received: true });
+        // ✅ Payment successful - Update order
+        if (session.payment_status === "paid") {
+          const orderId = session.metadata.orderId;
+
+          const order = await Order.findById(orderId);
+          if (order) {
+            order.status = "confirmed";
+            order.paymentInfo.status = "succeeded";
+            order.paymentInfo.stripePaymentIntentId = session.payment_intent;
+            order.paymentInfo.transactionId = session.id;
+            order.updatedAt = Date.now();
+
+            await order.save();
+
+            console.log(`✅ Order ${order.orderNumber} marked as PAID`);
+
+            // TODO: Send order confirmation email here
+          }
+        }
+        break;
+
+      case "checkout.session.expired":
+        const expiredSession = event.data.object;
+        const expiredOrderId = expiredSession.metadata.orderId;
+
+        // Mark order as payment expired/failed
+        const expiredOrder = await Order.findById(expiredOrderId);
+        if (expiredOrder && expiredOrder.status === "pending") {
+          expiredOrder.paymentInfo.status = "failed";
+          expiredOrder.notes =
+            (expiredOrder.notes || "") + "\nPayment session expired.";
+          await expiredOrder.save();
+
+          console.log(
+            `⚠️  Payment expired for order ${expiredOrder.orderNumber}`,
+          );
+        }
+        break;
+
+      case "charge.refunded":
+        const charge = event.data.object;
+
+        // Find order by payment intent
+        const refundedOrder = await Order.findOne({
+          "paymentInfo.stripePaymentIntentId": charge.payment_intent,
+        });
+
+        if (refundedOrder) {
+          refundedOrder.paymentInfo.status = "refunded";
+          refundedOrder.status = "cancelled";
+          refundedOrder.updatedAt = Date.now();
+          await refundedOrder.save();
+
+          console.log(`💰 Order ${refundedOrder.orderNumber} refunded`);
+
+          // TODO: Send refund confirmation email
+        }
+        break;
+
+      default:
+        console.log(`ℹ️  Unhandled event type: ${event.type}`);
+    }
+
+    res.json({ received: true });
+  } catch (err) {
+    console.error("Error processing webhook:", err);
+    res.status(500).json({ error: "Webhook processing failed" });
+  }
 };
 
-// Create refund
+// Create refund (admin only)
 const createRefund = async (req, res, next) => {
   try {
-    const {
-      paymentIntentId,
-      amount,
-      reason = "requested_by_customer",
-    } = req.body;
+    const { orderId, amount, reason = "requested_by_customer" } = req.body;
 
-    if (!paymentIntentId) {
-      throw new BadRequestError("Payment intent ID required");
+    if (!orderId) {
+      throw new BadRequestError("Order ID required");
+    }
+
+    const order = await Order.findById(orderId);
+    if (!order) {
+      throw new NotFoundError("Order not found");
+    }
+
+    if (!order.paymentInfo.stripePaymentIntentId) {
+      throw new BadRequestError("No payment found for this order");
+    }
+
+    if (order.paymentInfo.status === "refunded") {
+      throw new BadRequestError("Order already refunded");
     }
 
     const refundData = {
-      payment_intent: paymentIntentId,
+      payment_intent: order.paymentInfo.stripePaymentIntentId,
       reason,
     };
 
@@ -127,10 +284,17 @@ const createRefund = async (req, res, next) => {
 
     const refund = await stripe.refunds.create(refundData);
 
+    // Update order (webhook will also update, but we do it here for immediate response)
+    order.paymentInfo.status = "refunded";
+    order.status = "cancelled";
+    order.updatedAt = Date.now();
+    await order.save();
+
     res.status(200).send({
       refundId: refund.id,
       amount: refund.amount / 100,
       status: refund.status,
+      order: order,
     });
   } catch (err) {
     if (err.type === "StripeInvalidRequestError") {
@@ -142,8 +306,8 @@ const createRefund = async (req, res, next) => {
 };
 
 module.exports = {
-  createPaymentIntent,
-  confirmPayment,
+  createCheckoutSession,
+  getCheckoutSession,
   handleWebhook,
   createRefund,
 };
