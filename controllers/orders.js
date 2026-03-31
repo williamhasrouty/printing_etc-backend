@@ -11,11 +11,11 @@ const createOrder = (req, res, next) => {
     guestInfo,
     items,
     subtotal,
+    discount,
     tax,
     shipping,
     total,
     shippingAddress,
-    paymentInfo,
     notes,
   } = req.body;
 
@@ -23,12 +23,18 @@ const createOrder = (req, res, next) => {
   const orderData = {
     items,
     subtotal,
+    discount: discount || { code: null, amount: 0 },
     tax,
     shipping,
     total,
     shippingAddress,
-    paymentInfo,
     notes,
+    // ⚠️ SECURITY: Order starts as "pending" - ONLY webhook can mark as paid
+    status: "pending",
+    paymentInfo: {
+      method: "card", // Default to card payment
+      status: "pending", // Always starts as pending
+    },
   };
 
   // If user is authenticated, use their ID
@@ -46,6 +52,7 @@ const createOrder = (req, res, next) => {
       return Order.findById(order._id).populate("items.product");
     })
     .then((order) => {
+      // Return order with ID so frontend can create checkout session
       res.status(201).send(order);
     })
     .catch((err) => {
@@ -210,6 +217,114 @@ const getAllOrders = (req, res, next) => {
     .catch(next);
 };
 
+// Get order analytics (admin only)
+const getOrderAnalytics = async (req, res, next) => {
+  try {
+    const { startDate, endDate } = req.query;
+    const filter = {};
+
+    if (startDate || endDate) {
+      filter.createdAt = {};
+      if (startDate) filter.createdAt.$gte = new Date(startDate);
+      if (endDate) filter.createdAt.$lte = new Date(endDate);
+    }
+
+    // Total orders
+    const totalOrders = await Order.countDocuments(filter);
+
+    // Orders by status
+    const ordersByStatus = await Order.aggregate([
+      { $match: filter },
+      { $group: { _id: "$status", count: { $sum: 1 } } },
+    ]);
+
+    // Revenue statistics
+    const revenueStats = await Order.aggregate([
+      {
+        $match: {
+          ...filter,
+          status: { $in: ["confirmed", "processing", "shipped", "delivered"] },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalRevenue: { $sum: "$total" },
+          averageOrderValue: { $avg: "$total" },
+          totalOrders: { $sum: 1 },
+        },
+      },
+    ]);
+
+    // Top products
+    const topProducts = await Order.aggregate([
+      { $match: filter },
+      { $unwind: "$items" },
+      {
+        $group: {
+          _id: "$items.product",
+          productName: { $first: "$items.productName" },
+          totalQuantity: { $sum: "$items.quantity" },
+          totalRevenue: { $sum: "$items.totalPrice" },
+        },
+      },
+      { $sort: { totalRevenue: -1 } },
+      { $limit: 10 },
+    ]);
+
+    res.send({
+      totalOrders,
+      ordersByStatus,
+      revenue: revenueStats[0] || {
+        totalRevenue: 0,
+        averageOrderValue: 0,
+        totalOrders: 0,
+      },
+      topProducts,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Reorder - create new order from existing order
+const reorder = (req, res, next) => {
+  const { orderId } = req.params;
+
+  Order.findById(orderId)
+    .populate("items.product")
+    .then((order) => {
+      if (!order) {
+        throw new NotFoundError("Order not found");
+      }
+
+      // Check permission
+      if (req.user && order.user && order.user.toString() !== req.user._id) {
+        throw new ForbiddenError("Access denied");
+      }
+
+      // Return order items for frontend to recreate cart
+      // Frontend will handle address and payment
+      res.send({
+        items: order.items.map((item) => ({
+          product: item.product._id,
+          productName: item.productName,
+          quantity: item.quantity,
+          selectedOptions: item.selectedOptions,
+          customizations: item.customizations,
+        })),
+        shippingAddress: order.shippingAddress,
+      });
+    })
+    .catch((err) => {
+      if (err.name === "CastError") {
+        next(new BadRequestError("Invalid order ID"));
+      } else {
+        next(err);
+      }
+    });
+};
+
 module.exports = {
   createOrder,
   getUserOrders,
@@ -218,4 +333,6 @@ module.exports = {
   updateOrderStatus,
   cancelOrder,
   getAllOrders,
+  getOrderAnalytics,
+  reorder,
 };

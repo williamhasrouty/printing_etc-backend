@@ -8,6 +8,7 @@ const {
   CLOUDINARY_API_SECRET = "",
   STRIPE_SECRET_KEY = "",
   STRIPE_WEBHOOK_SECRET = "",
+  FRONTEND_URL = "http://localhost:3000",
 } = process.env;
 
 module.exports = {
@@ -20,4 +21,5 @@ module.exports = {
   CLOUDINARY_API_SECRET,
   STRIPE_SECRET_KEY,
   STRIPE_WEBHOOK_SECRET,
+  FRONTEND_URL,
 };

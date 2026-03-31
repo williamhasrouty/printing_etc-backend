@@ -7,6 +7,8 @@ const {
   updateOrderStatus,
   cancelOrder,
   getAllOrders,
+  getOrderAnalytics,
+  reorder,
 } = require("../controllers/orders");
 const {
   validateCreateOrder,
@@ -14,6 +16,7 @@ const {
   validateUpdateOrderStatus,
 } = require("../middlewares/validation");
 const auth = require("../middlewares/auth");
+const requireAdmin = require("../middlewares/admin");
 
 // Order creation can be done by authenticated users or guests
 // We'll use optional auth middleware for this
@@ -53,10 +56,16 @@ router.get("/:orderId", optionalAuth, validateOrderId, getOrderById);
 // Cancel order
 router.patch("/:orderId/cancel", auth, validateOrderId, cancelOrder);
 
-// Admin routes (will add admin middleware later)
-router.get("/", getAllOrders); // Get all orders
+// Reorder - get items from previous order
+router.get("/:orderId/reorder", auth, validateOrderId, reorder);
+
+// Admin routes
+router.get("/", auth, requireAdmin, getAllOrders); // Get all orders
+router.get("/analytics/stats", auth, requireAdmin, getOrderAnalytics); // Order analytics
 router.patch(
   "/:orderId/status",
+  auth,
+  requireAdmin,
   validateOrderId,
   validateUpdateOrderStatus,
   updateOrderStatus,

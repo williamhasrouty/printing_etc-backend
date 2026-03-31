@@ -1,5 +1,36 @@
-const mongoose = require('mongoose');
-const validator = require('validator');
+const mongoose = require("mongoose");
+const validator = require("validator");
+
+const addressSchema = new mongoose.Schema({
+  label: {
+    type: String,
+    default: "Home",
+  },
+  street: {
+    type: String,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: true,
+  },
+  state: {
+    type: String,
+    required: true,
+  },
+  zipCode: {
+    type: String,
+    required: true,
+  },
+  country: {
+    type: String,
+    default: "USA",
+  },
+  isDefault: {
+    type: Boolean,
+    default: false,
+  },
+});
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -8,7 +39,7 @@ const userSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator: (v) => validator.isEmail(v),
-      message: 'Invalid email format',
+      message: "Invalid email format",
     },
   },
   password: {
@@ -26,13 +57,19 @@ const userSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator: (v) => !v || validator.isMobilePhone(v),
-      message: 'Invalid phone number format',
+      message: "Invalid phone number format",
     },
   },
+  role: {
+    type: String,
+    enum: ["customer", "admin"],
+    default: "customer",
+  },
+  addresses: [addressSchema],
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
 
-module.exports = mongoose.model('user', userSchema);
+module.exports = mongoose.model("user", userSchema);

@@ -180,6 +180,10 @@ const validateCreateOrder = celebrate({
         }),
       ),
     subtotal: Joi.number().required().min(0),
+    discount: Joi.object().keys({
+      code: Joi.string(),
+      amount: Joi.number().min(0).default(0),
+    }),
     tax: Joi.number().required().min(0),
     shipping: Joi.number().required().min(0),
     total: Joi.number().required().min(0),
@@ -192,17 +196,8 @@ const validateCreateOrder = celebrate({
         zipCode: Joi.string().required(),
         country: Joi.string().default("USA"),
       }),
-    paymentInfo: Joi.object()
-      .required()
-      .keys({
-        method: Joi.string().valid("card", "paypal").default("card"),
-        stripePaymentIntentId: Joi.string(),
-        transactionId: Joi.string(),
-        status: Joi.string()
-          .valid("pending", "processing", "succeeded", "failed", "refunded")
-          .default("pending"),
-      }),
     notes: Joi.string(),
+    // ⚠️ REMOVED paymentInfo - Payment status is NEVER trusted from frontend
   }),
 });
 
@@ -223,6 +218,26 @@ const validateUpdateOrderStatus = celebrate({
   }),
 });
 
+// Validation for address
+const validateAddress = celebrate({
+  body: Joi.object().keys({
+    label: Joi.string(),
+    street: Joi.string().required(),
+    city: Joi.string().required(),
+    state: Joi.string().required(),
+    zipCode: Joi.string().required(),
+    country: Joi.string().default("USA"),
+    isDefault: Joi.boolean(),
+  }),
+});
+
+// Validation for address ID parameter
+const validateAddressId = celebrate({
+  params: Joi.object().keys({
+    addressId: Joi.string().required().hex().length(24),
+  }),
+});
+
 module.exports = {
   validateSignup,
   validateSignin,
@@ -233,4 +248,6 @@ module.exports = {
   validateOrderId,
   validateCreateOrder,
   validateUpdateOrderStatus,
+  validateAddress,
+  validateAddressId,
 };

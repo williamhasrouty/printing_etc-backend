@@ -75,6 +75,14 @@ const orderSchema = new mongoose.Schema({
     required: true,
     min: 0,
   },
+  discount: {
+    code: String,
+    amount: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+  },
   tax: {
     type: Number,
     required: true,
@@ -120,6 +128,7 @@ const orderSchema = new mongoose.Schema({
       enum: ["card", "paypal"],
       default: "card",
     },
+    stripeSessionId: String, // Stripe Checkout Session ID
     stripePaymentIntentId: String,
     transactionId: String,
     status: {
