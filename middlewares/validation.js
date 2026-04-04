@@ -146,59 +146,12 @@ const validateOrderId = celebrate({
 
 // Validation for creating an order
 const validateCreateOrder = celebrate({
-  body: Joi.object().keys({
-    guestInfo: Joi.object().keys({
-      name: Joi.string().required().min(2).max(50),
-      email: Joi.string().required().email(),
-      phone: Joi.string(),
+  body: Joi.object()
+    .unknown(true)
+    .keys({
+      items: Joi.array().required().min(1),
+      total: Joi.number().required().min(0),
     }),
-    items: Joi.array()
-      .required()
-      .min(1)
-      .items(
-        Joi.object().keys({
-          product: Joi.string().required().hex().length(24),
-          productName: Joi.string().required(),
-          quantity: Joi.number().required().min(1),
-          selectedOptions: Joi.object().keys({
-            size: Joi.string(),
-            paperType: Joi.string(),
-            finish: Joi.string(),
-            color: Joi.string(),
-          }),
-          customizations: Joi.object().keys({
-            notes: Joi.string(),
-            files: Joi.array().items(
-              Joi.object().keys({
-                url: Joi.string().uri(),
-                name: Joi.string(),
-              }),
-            ),
-          }),
-          price: Joi.number().required().min(0),
-          totalPrice: Joi.number().required().min(0),
-        }),
-      ),
-    subtotal: Joi.number().required().min(0),
-    discount: Joi.object().keys({
-      code: Joi.string(),
-      amount: Joi.number().min(0).default(0),
-    }),
-    tax: Joi.number().required().min(0),
-    shipping: Joi.number().required().min(0),
-    total: Joi.number().required().min(0),
-    shippingAddress: Joi.object()
-      .required()
-      .keys({
-        street: Joi.string().required(),
-        city: Joi.string().required(),
-        state: Joi.string().required(),
-        zipCode: Joi.string().required(),
-        country: Joi.string().default("USA"),
-      }),
-    notes: Joi.string(),
-    // ⚠️ REMOVED paymentInfo - Payment status is NEVER trusted from frontend
-  }),
 });
 
 // Validation for updating order status

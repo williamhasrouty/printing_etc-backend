@@ -9,6 +9,7 @@ const {
 const createOrder = (req, res, next) => {
   const {
     guestInfo,
+    customerInfo,
     items,
     subtotal,
     discount,
@@ -16,19 +17,91 @@ const createOrder = (req, res, next) => {
     shipping,
     total,
     shippingAddress,
+    billingInfo,
+    deliveryMethod,
     notes,
   } = req.body;
 
+  // Generate unique order number
+  const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+
+  // Transform items to include all required fields and product details
+  const transformedItems = items.map((item) => {
+    // Build customizations with files
+    const customizations = item.customizations || {};
+    const files = [];
+
+    // Add front/main file if exists
+    if (item.uploadedFile && item.uploadedFile.cloudinaryUrl) {
+      files.push({
+        url: item.uploadedFile.cloudinaryUrl,
+        name: item.uploadedFile.fileName || "Front Design",
+        uploadedAt: new Date(),
+      });
+    }
+
+    // Add back file if exists
+    if (item.uploadedBackFile && item.uploadedBackFile.cloudinaryUrl) {
+      files.push({
+        url: item.uploadedBackFile.cloudinaryUrl,
+        name: item.uploadedBackFile.fileName || "Back Design",
+        uploadedAt: new Date(),
+      });
+    }
+
+    // Merge files into customizations
+    if (files.length > 0) {
+      customizations.files = files;
+    }
+
+    return {
+      product: item.productId || item.product,
+      productName: item.name || item.productName,
+      productImage: item.imageUrl || item.productImage,
+      productCategory: item.category || item.productCategory,
+      quantity: item.quantity,
+      selectedOptions: item.selectedOptions || item.options || {},
+      customizations: customizations,
+      price: item.price || item.basePrice || 0,
+      totalPrice:
+        item.totalPrice || item.quantity * (item.price || item.basePrice || 0),
+    };
+  });
+
   // Check if user is authenticated or guest checkout
   const orderData = {
-    items,
-    subtotal,
+    orderNumber,
+    items: transformedItems,
+    subtotal: subtotal || 0,
     discount: discount || { code: null, amount: 0 },
-    tax,
-    shipping,
+    tax: tax || 0,
+    shipping: shipping || 0,
+    deliveryMethod: deliveryMethod || "shipping",
     total,
-    shippingAddress,
-    notes,
+    shippingAddress: {
+      street:
+        shippingAddress?.street ||
+        billingInfo?.shippingAddress ||
+        billingInfo?.billingAddress ||
+        "",
+      city:
+        shippingAddress?.city ||
+        billingInfo?.shippingCity ||
+        billingInfo?.city ||
+        "",
+      state:
+        shippingAddress?.state ||
+        billingInfo?.shippingState ||
+        billingInfo?.state ||
+        "",
+      zipCode:
+        shippingAddress?.zipCode ||
+        billingInfo?.shippingZipCode ||
+        billingInfo?.zipCode ||
+        "",
+      country: shippingAddress?.country || billingInfo?.country || "USA",
+    },
+    notes: notes || "",
     // ⚠️ SECURITY: Order starts as "pending" - ONLY webhook can mark as paid
     status: "pending",
     paymentInfo: {
@@ -40,9 +113,9 @@ const createOrder = (req, res, next) => {
   // If user is authenticated, use their ID
   if (req.user) {
     orderData.user = req.user._id;
-  } else if (guestInfo) {
-    // Guest checkout
-    orderData.guestInfo = guestInfo;
+  } else if (guestInfo || customerInfo) {
+    // Guest checkout - accept either guestInfo or customerInfo
+    orderData.guestInfo = guestInfo || customerInfo;
   } else {
     return next(new BadRequestError("User information or guest info required"));
   }
@@ -57,7 +130,9 @@ const createOrder = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === "ValidationError") {
-        next(new BadRequestError("Invalid order data provided"));
+        // Extract validation error details
+        const errors = Object.values(err.errors).map((e) => e.message);
+        next(new BadRequestError(`Invalid order data: ${errors.join(", ")}`));
       } else {
         next(err);
       }
