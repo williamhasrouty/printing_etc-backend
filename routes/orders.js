@@ -23,21 +23,33 @@ const requireAdmin = require("../middlewares/admin");
 const optionalAuth = (req, res, next) => {
   const { authorization } = req.headers;
 
-  if (!authorization || !authorization.startsWith("Bearer ")) {
+  // Check if no authorization or if token is "null" or "undefined" string
+  if (
+    !authorization ||
+    !authorization.startsWith("Bearer ") ||
+    authorization === "Bearer null" ||
+    authorization === "Bearer undefined"
+  ) {
     return next(); // No token, continue as guest
   }
 
   const token = authorization.replace("Bearer ", "");
+
+  // Additional check for "null" or "undefined" after extraction
+  if (!token || token === "null" || token === "undefined") {
+    return next(); // Continue as guest
+  }
+
   const jwt = require("jsonwebtoken");
   const { JWT_SECRET } = require("../config/config");
-  const { UnauthorizedError } = require("../errors/errors");
 
   try {
     const payload = jwt.verify(token, JWT_SECRET);
     req.user = payload;
     next();
   } catch (err) {
-    next(new UnauthorizedError("Invalid token"));
+    // Token is invalid or expired - continue as guest
+    next();
   }
 };
 

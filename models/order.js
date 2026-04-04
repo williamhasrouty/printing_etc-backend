@@ -11,16 +11,22 @@ const orderItemSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  productImage: {
+    type: String,
+    required: false,
+  },
+  productCategory: {
+    type: String,
+    required: false,
+  },
   quantity: {
     type: Number,
     required: true,
     min: 1,
   },
   selectedOptions: {
-    size: String,
-    paperType: String,
-    finish: String,
-    color: String,
+    type: mongoose.Schema.Types.Mixed,
+    default: {},
   },
   customizations: {
     notes: String,
@@ -93,6 +99,11 @@ const orderSchema = new mongoose.Schema({
     required: true,
     min: 0,
   },
+  deliveryMethod: {
+    type: String,
+    enum: ["shipping", "pickup"],
+    default: "shipping",
+  },
   total: {
     type: Number,
     required: true,
@@ -101,23 +112,23 @@ const orderSchema = new mongoose.Schema({
   shippingAddress: {
     street: {
       type: String,
-      required: true,
+      required: false,
     },
     city: {
       type: String,
-      required: true,
+      required: false,
     },
     state: {
       type: String,
-      required: true,
+      required: false,
     },
     zipCode: {
       type: String,
-      required: true,
+      required: false,
     },
     country: {
       type: String,
-      required: true,
+      required: false,
       default: "USA",
     },
   },

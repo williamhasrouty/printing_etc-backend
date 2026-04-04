@@ -17,7 +17,7 @@ const getProducts = (req, res, next) => {
   }
 
   Product.find(filter)
-    .sort({ createdAt: -1 })
+    .sort({ position: 1, createdAt: -1 })
     .then((products) => res.send(products))
     .catch(next);
 };

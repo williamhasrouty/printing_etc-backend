@@ -22,6 +22,11 @@ const productSchema = new mongoose.Schema({
       "brochures",
       "posters",
       "banners",
+      "stickers",
+      "postcards",
+      "booklets",
+      "door-hangers",
+      "decals",
       "stationery",
       "invitations",
       "custom-printing",
@@ -96,6 +101,10 @@ const productSchema = new mongoose.Schema({
   featured: {
     type: Boolean,
     default: false,
+  },
+  position: {
+    type: Number,
+    default: 0,
   },
   createdAt: {
     type: Date,
