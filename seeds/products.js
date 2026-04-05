@@ -17,6 +17,16 @@ const sampleProducts = [
       "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003091/printing-etc/products/business-card-stock.png",
     ],
     options: {
+      quantities: [
+        { name: "500", priceModifier: 0 },
+        { name: "1000", priceModifier: 13 },
+        { name: "2500", priceModifier: 40 },
+        { name: "5000", priceModifier: 85 },
+        { name: "7500", priceModifier: 130 },
+        { name: "10000", priceModifier: 175 },
+        { name: "15000", priceModifier: 260 },
+        { name: "25000", priceModifier: 415 },
+      ],
       sizes: [
         {
           name: 'Standard (3.5" x 2")',
@@ -29,16 +39,52 @@ const sampleProducts = [
           priceModifier: 5,
         },
       ],
+      orientations: [
+        { name: "Horizontal", priceModifier: 0 },
+        { name: "Vertical", priceModifier: 0 },
+      ],
       paperTypes: [
-        { name: "Standard (100 lb)", priceModifier: 0 },
-        { name: "Premium (130 lb)", priceModifier: 10 },
-        { name: "Glossy", priceModifier: 15 },
+        { name: "16pt Gloss", priceModifier: 0 },
+        { name: "16pt Uncoated", priceModifier: 0 },
+        { name: "16pt Matte", priceModifier: 0 },
+        { name: "13pt Premium Linen", priceModifier: 13 },
+        { name: "24 pt. Trifecta Green", priceModifier: 63 },
+        { name: "38 pt. Trifecta Black", priceModifier: 90 },
+        { name: "38 pt. Trifecta Blue", priceModifier: 90 },
+        { name: "38 pt. Trifecta Red", priceModifier: 90 },
       ],
-      finishes: [
-        { name: "Matte", priceModifier: 0 },
-        { name: "Glossy", priceModifier: 5 },
-        { name: "UV Coating", priceModifier: 10 },
+      colors: [
+        { name: "Full Color Front, No Back", priceModifier: 0 },
+        { name: "Full Color Front, Grayscale Back", priceModifier: 0 },
+        { name: "Full Color Both Sides", priceModifier: 10 },
       ],
+      roundedCorners: [
+        { name: "No", priceModifier: 0 },
+        { name: "Yes", priceModifier: 15 },
+      ],
+      coatings: [
+        { name: "Matte Aqueous Coating - Front", priceModifier: 0 },
+        { name: "Matte Aqueous Coating - Both Sides", priceModifier: 0 },
+        { name: "UV Gloss Coating - Front", priceModifier: 0 },
+        { name: "UV Gloss Coating - Both Sides", priceModifier: 0 },
+      ],
+      raisedPrint: [
+        { name: "None", priceModifier: 0 },
+        { name: "Raised UV Print Front", priceModifier: 30 },
+        { name: "Raised UV Both Sides", priceModifier: 40 },
+        { name: "Raised Foil Print Front", priceModifier: 30 },
+        { name: "Raised Foil Print Both Sides", priceModifier: 40 },
+      ],
+      customOptions: {
+        velvetfinish: {
+          label: "Velvet Finish",
+          options: [
+            { name: "None", priceModifier: 0 },
+            { name: "Velvet Finish - Front", priceModifier: 35 },
+            { name: "Velvet Finish - Both Sides", priceModifier: 50 },
+          ],
+        },
+      },
     },
     inStock: true,
     featured: true,

@@ -52,6 +52,8 @@ const createProduct = (req, res, next) => {
     imageUrl,
     images,
     options,
+    pricing,
+    position,
     inStock,
     featured,
   } = req.body;
@@ -64,6 +66,8 @@ const createProduct = (req, res, next) => {
     imageUrl,
     images,
     options,
+    pricing,
+    position,
     inStock,
     featured,
   })
@@ -88,26 +92,32 @@ const updateProduct = (req, res, next) => {
     imageUrl,
     images,
     options,
+    pricing,
+    position,
     inStock,
     featured,
   } = req.body;
 
-  Product.findByIdAndUpdate(
-    productId,
-    {
-      name,
-      description,
-      category,
-      basePrice,
-      imageUrl,
-      images,
-      options,
-      inStock,
-      featured,
-      updatedAt: Date.now(),
-    },
-    { new: true, runValidators: true },
-  )
+  const updateData = {
+    updatedAt: Date.now(),
+  };
+
+  if (name !== undefined) updateData.name = name;
+  if (description !== undefined) updateData.description = description;
+  if (category !== undefined) updateData.category = category;
+  if (basePrice !== undefined) updateData.basePrice = basePrice;
+  if (imageUrl !== undefined) updateData.imageUrl = imageUrl;
+  if (images !== undefined) updateData.images = images;
+  if (options !== undefined) updateData.options = options;
+  if (pricing !== undefined) updateData.pricing = pricing;
+  if (position !== undefined) updateData.position = position;
+  if (inStock !== undefined) updateData.inStock = inStock;
+  if (featured !== undefined) updateData.featured = featured;
+
+  Product.findByIdAndUpdate(productId, updateData, {
+    new: true,
+    runValidators: true,
+  })
     .then((product) => {
       if (!product) {
         throw new NotFoundError("Product not found");

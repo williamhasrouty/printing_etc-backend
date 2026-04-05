@@ -54,6 +54,11 @@ const validateCreateProduct = celebrate({
         "brochures",
         "posters",
         "banners",
+        "stickers",
+        "postcards",
+        "booklets",
+        "door-hangers",
+        "decals",
         "stationery",
         "invitations",
         "custom-printing",
@@ -62,33 +67,101 @@ const validateCreateProduct = celebrate({
     basePrice: Joi.number().required().min(0),
     imageUrl: Joi.string().required().uri(),
     images: Joi.array().items(Joi.string().uri()),
-    options: Joi.object().keys({
-      sizes: Joi.array().items(
-        Joi.object().keys({
-          name: Joi.string(),
-          dimensions: Joi.string(),
-          priceModifier: Joi.number().default(0),
+    options: Joi.object()
+      .unknown(true)
+      .keys({
+        quantities: Joi.array().items(
+          Joi.object()
+            .unknown(true)
+            .keys({
+              name: Joi.string(),
+              priceModifier: Joi.number().default(0),
+            }),
+        ),
+        sizes: Joi.array().items(
+          Joi.object()
+            .unknown(true)
+            .keys({
+              name: Joi.string(),
+              dimensions: Joi.string(),
+              priceModifier: Joi.number().default(0),
+            }),
+        ),
+        orientations: Joi.array().items(
+          Joi.object()
+            .unknown(true)
+            .keys({
+              name: Joi.string(),
+              priceModifier: Joi.number().default(0),
+            }),
+        ),
+        paperTypes: Joi.array().items(
+          Joi.object()
+            .unknown(true)
+            .keys({
+              name: Joi.string(),
+              priceModifier: Joi.number().default(0),
+            }),
+        ),
+        finishes: Joi.array().items(
+          Joi.object()
+            .unknown(true)
+            .keys({
+              name: Joi.string(),
+              priceModifier: Joi.number().default(0),
+            }),
+        ),
+        colors: Joi.array().items(
+          Joi.object()
+            .unknown(true)
+            .keys({
+              name: Joi.string(),
+              priceModifier: Joi.number().default(0),
+            }),
+        ),
+        roundedCorners: Joi.array().items(
+          Joi.object()
+            .unknown(true)
+            .keys({
+              name: Joi.string(),
+              priceModifier: Joi.number().default(0),
+            }),
+        ),
+        coatings: Joi.array().items(
+          Joi.object()
+            .unknown(true)
+            .keys({
+              name: Joi.string(),
+              priceModifier: Joi.number().default(0),
+            }),
+        ),
+        raisedPrint: Joi.array().items(
+          Joi.object()
+            .unknown(true)
+            .keys({
+              name: Joi.string(),
+              priceModifier: Joi.number().default(0),
+            }),
+        ),
+        customOptions: Joi.object().unknown(true),
+      }),
+    pricing: Joi.array().items(
+      Joi.object()
+        .unknown(true)
+        .keys({
+          quantity: Joi.string().allow(""),
+          size: Joi.string().allow(""),
+          paperType: Joi.string().allow(""),
+          orientation: Joi.string().allow(""),
+          color: Joi.string().allow(""),
+          coating: Joi.string().allow(""),
+          finish: Joi.string().allow(""),
+          roundedCorner: Joi.string().allow(""),
+          raisedPrint: Joi.string().allow(""),
+          price: Joi.number().required().min(0),
         }),
-      ),
-      paperTypes: Joi.array().items(
-        Joi.object().keys({
-          name: Joi.string(),
-          priceModifier: Joi.number().default(0),
-        }),
-      ),
-      finishes: Joi.array().items(
-        Joi.object().keys({
-          name: Joi.string(),
-          priceModifier: Joi.number().default(0),
-        }),
-      ),
-      colors: Joi.array().items(
-        Joi.object().keys({
-          name: Joi.string(),
-          priceModifier: Joi.number().default(0),
-        }),
-      ),
-    }),
+    ),
+    position: Joi.number().integer().min(0),
     inStock: Joi.boolean(),
     featured: Joi.boolean(),
   }),
@@ -105,6 +178,11 @@ const validateUpdateProduct = celebrate({
       "brochures",
       "posters",
       "banners",
+      "stickers",
+      "postcards",
+      "booklets",
+      "door-hangers",
+      "decals",
       "stationery",
       "invitations",
       "custom-printing",
@@ -113,33 +191,101 @@ const validateUpdateProduct = celebrate({
     basePrice: Joi.number().min(0),
     imageUrl: Joi.string().uri(),
     images: Joi.array().items(Joi.string().uri()),
-    options: Joi.object().keys({
-      sizes: Joi.array().items(
-        Joi.object().keys({
-          name: Joi.string(),
-          dimensions: Joi.string(),
-          priceModifier: Joi.number().default(0),
+    options: Joi.object()
+      .unknown(true)
+      .keys({
+        quantities: Joi.array().items(
+          Joi.object()
+            .unknown(true)
+            .keys({
+              name: Joi.string(),
+              priceModifier: Joi.number().default(0),
+            }),
+        ),
+        sizes: Joi.array().items(
+          Joi.object()
+            .unknown(true)
+            .keys({
+              name: Joi.string(),
+              dimensions: Joi.string(),
+              priceModifier: Joi.number().default(0),
+            }),
+        ),
+        orientations: Joi.array().items(
+          Joi.object()
+            .unknown(true)
+            .keys({
+              name: Joi.string(),
+              priceModifier: Joi.number().default(0),
+            }),
+        ),
+        paperTypes: Joi.array().items(
+          Joi.object()
+            .unknown(true)
+            .keys({
+              name: Joi.string(),
+              priceModifier: Joi.number().default(0),
+            }),
+        ),
+        finishes: Joi.array().items(
+          Joi.object()
+            .unknown(true)
+            .keys({
+              name: Joi.string(),
+              priceModifier: Joi.number().default(0),
+            }),
+        ),
+        colors: Joi.array().items(
+          Joi.object()
+            .unknown(true)
+            .keys({
+              name: Joi.string(),
+              priceModifier: Joi.number().default(0),
+            }),
+        ),
+        roundedCorners: Joi.array().items(
+          Joi.object()
+            .unknown(true)
+            .keys({
+              name: Joi.string(),
+              priceModifier: Joi.number().default(0),
+            }),
+        ),
+        coatings: Joi.array().items(
+          Joi.object()
+            .unknown(true)
+            .keys({
+              name: Joi.string(),
+              priceModifier: Joi.number().default(0),
+            }),
+        ),
+        raisedPrint: Joi.array().items(
+          Joi.object()
+            .unknown(true)
+            .keys({
+              name: Joi.string(),
+              priceModifier: Joi.number().default(0),
+            }),
+        ),
+        customOptions: Joi.object().unknown(true),
+      }),
+    pricing: Joi.array().items(
+      Joi.object()
+        .unknown(true)
+        .keys({
+          quantity: Joi.string().allow(""),
+          size: Joi.string().allow(""),
+          paperType: Joi.string().allow(""),
+          orientation: Joi.string().allow(""),
+          color: Joi.string().allow(""),
+          coating: Joi.string().allow(""),
+          finish: Joi.string().allow(""),
+          roundedCorner: Joi.string().allow(""),
+          raisedPrint: Joi.string().allow(""),
+          price: Joi.number().required().min(0),
         }),
-      ),
-      paperTypes: Joi.array().items(
-        Joi.object().keys({
-          name: Joi.string(),
-          priceModifier: Joi.number().default(0),
-        }),
-      ),
-      finishes: Joi.array().items(
-        Joi.object().keys({
-          name: Joi.string(),
-          priceModifier: Joi.number().default(0),
-        }),
-      ),
-      colors: Joi.array().items(
-        Joi.object().keys({
-          name: Joi.string(),
-          priceModifier: Joi.number().default(0),
-        }),
-      ),
-    }),
+    ),
+    position: Joi.number().integer().min(0),
     inStock: Joi.boolean(),
     featured: Joi.boolean(),
   }),

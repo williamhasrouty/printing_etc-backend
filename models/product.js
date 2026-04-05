@@ -56,10 +56,28 @@ const productSchema = new mongoose.Schema({
     },
   ],
   options: {
+    quantities: [
+      {
+        name: String,
+        priceModifier: {
+          type: Number,
+          default: 0,
+        },
+      },
+    ],
     sizes: [
       {
         name: String,
         dimensions: String,
+        priceModifier: {
+          type: Number,
+          default: 0,
+        },
+      },
+    ],
+    orientations: [
+      {
+        name: String,
         priceModifier: {
           type: Number,
           default: 0,
@@ -93,7 +111,56 @@ const productSchema = new mongoose.Schema({
         },
       },
     ],
+    roundedCorners: [
+      {
+        name: String,
+        priceModifier: {
+          type: Number,
+          default: 0,
+        },
+      },
+    ],
+    coatings: [
+      {
+        name: String,
+        priceModifier: {
+          type: Number,
+          default: 0,
+        },
+      },
+    ],
+    raisedPrint: [
+      {
+        name: String,
+        priceModifier: {
+          type: Number,
+          default: 0,
+        },
+      },
+    ],
+    customOptions: {
+      type: mongoose.Schema.Types.Mixed,
+      default: {},
+    },
   },
+  pricing: [
+    {
+      quantity: String,
+      size: String,
+      paperType: String,
+      orientation: String,
+      color: String,
+      coating: String,
+      finish: String,
+      roundedCorner: String,
+      raisedPrint: String,
+      price: {
+        type: Number,
+        required: true,
+        min: 0,
+      },
+    },
+  ],
   inStock: {
     type: Boolean,
     default: true,
