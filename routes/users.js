@@ -2,12 +2,14 @@ const router = require("express").Router();
 const {
   getCurrentUser,
   updateUser,
+  updatePassword,
   addAddress,
   updateAddress,
   deleteAddress,
 } = require("../controllers/users");
 const {
   validateUpdateUser,
+  validateUpdatePassword,
   validateAddress,
   validateAddressId,
 } = require("../middlewares/validation");
@@ -17,6 +19,9 @@ router.get("/me", getCurrentUser);
 
 // PATCH /users/me - update current user profile
 router.patch("/me", validateUpdateUser, updateUser);
+
+// PATCH /users/me/password - update password
+router.patch("/me/password", validateUpdatePassword, updatePassword);
 
 // POST /users/me/addresses - add new address
 router.post("/me/addresses", validateAddress, addAddress);

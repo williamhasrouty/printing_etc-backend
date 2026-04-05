@@ -6,7 +6,7 @@ const validateSignup = celebrate({
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
     name: Joi.string().required().min(2).max(50),
-    phone: Joi.string(),
+    phone: Joi.string().required(),
   }),
 });
 
@@ -23,6 +23,14 @@ const validateUpdateUser = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(50),
     phone: Joi.string(),
+  }),
+});
+
+// Validation for updating password
+const validateUpdatePassword = celebrate({
+  body: Joi.object().keys({
+    currentPassword: Joi.string().required(),
+    newPassword: Joi.string().required().min(8),
   }),
 });
 
@@ -165,6 +173,7 @@ const validateUpdateOrderStatus = celebrate({
         "processing",
         "shipped",
         "delivered",
+        "completed",
         "cancelled",
       ),
     trackingNumber: Joi.string(),
@@ -195,6 +204,7 @@ module.exports = {
   validateSignup,
   validateSignin,
   validateUpdateUser,
+  validateUpdatePassword,
   validateProductId,
   validateCreateProduct,
   validateUpdateProduct,
