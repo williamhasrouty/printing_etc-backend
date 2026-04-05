@@ -240,11 +240,47 @@ const deleteAddress = (req, res, next) => {
     .catch(next);
 };
 
+// Update password
+const updatePassword = (req, res, next) => {
+  const { currentPassword, newPassword } = req.body;
+
+  User.findById(req.user._id)
+    .select("+password")
+    .then((user) => {
+      if (!user) {
+        throw new NotFoundError("User not found");
+      }
+
+      // Verify current password
+      return bcrypt.compare(currentPassword, user.password).then((matched) => {
+        if (!matched) {
+          throw new UnauthorizedError("Current password is incorrect");
+        }
+
+        // Hash new password
+        return bcrypt.hash(newPassword, 10).then((hash) => {
+          user.password = hash;
+          return user.save();
+        });
+      });
+    })
+    .then((user) => {
+      res.send({
+        _id: user._id,
+        email: user.email,
+        name: user.name,
+        phone: user.phone,
+      });
+    })
+    .catch(next);
+};
+
 module.exports = {
   createUser,
   login,
   getCurrentUser,
   updateUser,
+  updatePassword,
   addAddress,
   updateAddress,
   deleteAddress,

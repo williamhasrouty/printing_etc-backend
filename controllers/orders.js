@@ -286,7 +286,7 @@ const getAllOrders = (req, res, next) => {
 
   Order.find(filter)
     .populate("items.product")
-    .populate("user", "name email")
+    .populate("user", "name email phone")
     .sort({ createdAt: -1 })
     .then((orders) => res.send(orders))
     .catch(next);
