@@ -517,6 +517,52 @@ const sampleProducts = [
     inStock: true,
     featured: false,
   },
+  {
+    position: 13,
+    name: "Car Magnets",
+    description:
+      "Durable vehicle magnets for advertising and promotions. Weather-resistant and easy to apply.",
+    category: "custom-printing",
+    basePrice: 25,
+    imageUrl:
+      "https://res.cloudinary.com/dlonvpwii/image/upload/v1775413781/carmagnet_nvsit6.webp",
+    images: [
+      "https://res.cloudinary.com/dlonvpwii/image/upload/v1775413781/carmagnet_nvsit6.webp",
+    ],
+    options: {
+      quantities: [
+        { name: "1", priceModifier: 0 },
+        { name: "2", priceModifier: 20 },
+        { name: "5", priceModifier: 45 },
+        { name: "10", priceModifier: 85 },
+        { name: "25", priceModifier: 200 },
+        { name: "50", priceModifier: 375 },
+      ],
+      sizes: [
+        {
+          name: '12" x 18"',
+          dimensions: "12x18",
+          priceModifier: 0,
+        },
+        {
+          name: '12" x 24"',
+          dimensions: "12x24",
+          priceModifier: 10,
+        },
+        {
+          name: '18" x 24"',
+          dimensions: "18x24",
+          priceModifier: 20,
+        },
+      ],
+      thickness: [
+        { name: "30 mil (Standard)", priceModifier: 0 },
+        { name: "60 mil (Heavy Duty)", priceModifier: 15 },
+      ],
+    },
+    inStock: true,
+    featured: false,
+  },
 ];
 
 // Connect to MongoDB and seed products

@@ -77,6 +77,11 @@ const imageMapping = [
     filename: "blueprints.jpg",
     folder: "printing-etc/products",
   },
+  {
+    product: "Car Magnets",
+    filename: "carmagnet.webp",
+    folder: "printing-etc/products",
+  },
 ];
 
 async function uploadImages() {
