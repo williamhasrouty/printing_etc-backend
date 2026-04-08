@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
+const mongoSanitize = require("express-mongo-sanitize");
+const xss = require("xss-clean");
 const { errors } = require("celebrate");
 const routes = require("./routes");
 const errorHandler = require("./middlewares/errorHandler");
@@ -12,6 +14,11 @@ const { PORT, MONGODB_URI, NODE_ENV } = require("./config/config");
 const { NotFoundError } = require("./errors/errors");
 
 const app = express();
+
+// Trust proxy in production (for proper client IP detection behind NGINX)
+if (NODE_ENV === "production") {
+  app.set("trust proxy", 1);
+}
 
 // Connect to MongoDB
 mongoose
@@ -25,6 +32,12 @@ mongoose
 
 // Security middleware
 app.use(helmet());
+
+// Prevent NoSQL injection attacks
+app.use(mongoSanitize());
+
+// Sanitize user input from XSS attacks
+app.use(xss());
 
 // CORS configuration
 const corsOptions = {
@@ -50,6 +63,16 @@ app.use(express.urlencoded({ extended: true }));
 
 // Logging
 app.use(requestLogger);
+
+// HTTPS enforcement in production
+if (NODE_ENV === "production") {
+  app.use((req, res, next) => {
+    if (req.header("x-forwarded-proto") !== "https") {
+      return res.redirect(`https://${req.header("host")}${req.url}`);
+    }
+    next();
+  });
+}
 
 // Root route
 app.get("/", (req, res) => {
