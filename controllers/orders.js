@@ -1,84 +1,156 @@
 const Order = require("../models/order");
+const Product = require("../models/product");
+const DiscountCode = require("../models/discountCode");
 const {
   BadRequestError,
   NotFoundError,
   ForbiddenError,
 } = require("../errors/errors");
+const {
+  calculateItemPrice,
+  calculateOrderTotal,
+  calculateShipping,
+  getTaxRate,
+} = require("../utils/pricing");
 
-// Create a new order
-const createOrder = (req, res, next) => {
-  const {
-    guestInfo,
-    customerInfo,
-    items,
-    subtotal,
-    discount,
-    tax,
-    shipping,
-    total,
-    shippingAddress,
-    billingInfo,
-    deliveryMethod,
-    notes,
-  } = req.body;
+// Create a new order (with BACKEND price validation and recalculation)
+const createOrder = async (req, res, next) => {
+  try {
+    const {
+      guestInfo,
+      customerInfo,
+      items,
+      discount,
+      shippingAddress,
+      billingInfo,
+      deliveryMethod,
+      notes,
+    } = req.body;
 
-  // Generate unique order number
-  const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+    // Validate items exist
+    if (!items || items.length === 0) {
+      throw new BadRequestError("Order must contain at least one item");
+    }
 
-  // Transform items to include all required fields and product details
-  const transformedItems = items.map((item) => {
-    // Build customizations with files
-    const customizations = item.customizations || {};
-    const files = [];
+    // Generate unique order number
+    const orderNumber = `ORD-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
 
-    // Add front/main file if exists
-    if (item.uploadedFile && item.uploadedFile.cloudinaryUrl) {
-      files.push({
-        url: item.uploadedFile.cloudinaryUrl,
-        name: item.uploadedFile.fileName || "Front Design",
-        uploadedAt: new Date(),
+    // SECURITY: Validate ALL product IDs and fetch actual products from database
+    const productIds = items.map((item) => item.productId || item.product);
+    const products = await Product.find({ _id: { $in: productIds } });
+
+    if (products.length !== productIds.length) {
+      throw new BadRequestError("One or more invalid product IDs");
+    }
+
+    // Create a map for quick product lookup
+    const productMap = {};
+    products.forEach((p) => {
+      productMap[p._id.toString()] = p;
+    });
+
+    // SECURITY: Recalculate prices for each item using BACKEND logic
+    const validatedItems = items.map((item) => {
+      const productId = (item.productId || item.product).toString();
+      const product = productMap[productId];
+
+      if (!product) {
+        throw new BadRequestError(`Product not found: ${productId}`);
+      }
+
+      // Validate quantity
+      const quantity = parseInt(item.quantity, 10);
+      if (!quantity || quantity < 1) {
+        throw new BadRequestError("Invalid quantity");
+      }
+
+      // RECALCULATE price using backend logic (NEVER trust frontend!)
+      const { price, totalPrice } = calculateItemPrice(
+        product,
+        item.selectedOptions || item.options || {},
+        quantity,
+      );
+
+      // Build customizations with files
+      const customizations = item.customizations || {};
+      const files = [];
+
+      // Add front/main file if exists
+      if (item.uploadedFile && item.uploadedFile.cloudinaryUrl) {
+        files.push({
+          url: item.uploadedFile.cloudinaryUrl,
+          name: item.uploadedFile.fileName || "Front Design",
+          uploadedAt: new Date(),
+        });
+      }
+
+      // Add back file if exists
+      if (item.uploadedBackFile && item.uploadedBackFile.cloudinaryUrl) {
+        files.push({
+          url: item.uploadedBackFile.cloudinaryUrl,
+          name: item.uploadedBackFile.fileName || "Back Design",
+          uploadedAt: new Date(),
+        });
+      }
+
+      // Merge files into customizations
+      if (files.length > 0) {
+        customizations.files = files;
+      }
+
+      return {
+        product: product._id,
+        productName: product.name,
+        productImage: product.imageUrl,
+        productCategory: product.category,
+        quantity,
+        selectedOptions: item.selectedOptions || item.options || {},
+        customizations,
+        price, // ✅ Backend-calculated price
+        totalPrice, // ✅ Backend-calculated total
+      };
+    });
+
+    // SECURITY: Validate discount code if provided
+    let discountAmount = 0;
+    let discountCode = null;
+
+    if (discount && discount.code) {
+      const code = await DiscountCode.findOne({
+        code: discount.code.toUpperCase(),
       });
+
+      if (!code) {
+        throw new BadRequestError("Invalid discount code");
+      }
+
+      if (!code.isValid()) {
+        throw new BadRequestError("Discount code is not valid or has expired");
+      }
+
+      // Calculate subtotal first to check minimum order amount
+      const itemsSubtotal = validatedItems.reduce(
+        (sum, item) => sum + item.totalPrice,
+        0,
+      );
+
+      if (itemsSubtotal < code.minOrderAmount) {
+        throw new BadRequestError(
+          `Minimum order amount of $${code.minOrderAmount} required for this discount`,
+        );
+      }
+
+      // Calculate discount using backend logic
+      discountAmount = code.calculateDiscount(itemsSubtotal, validatedItems);
+      discountCode = code.code;
+
+      // Increment usage count
+      code.usageCount += 1;
+      await code.save();
     }
 
-    // Add back file if exists
-    if (item.uploadedBackFile && item.uploadedBackFile.cloudinaryUrl) {
-      files.push({
-        url: item.uploadedBackFile.cloudinaryUrl,
-        name: item.uploadedBackFile.fileName || "Back Design",
-        uploadedAt: new Date(),
-      });
-    }
-
-    // Merge files into customizations
-    if (files.length > 0) {
-      customizations.files = files;
-    }
-
-    return {
-      product: item.productId || item.product,
-      productName: item.name || item.productName,
-      productImage: item.imageUrl || item.productImage,
-      productCategory: item.category || item.productCategory,
-      quantity: item.quantity,
-      selectedOptions: item.selectedOptions || item.options || {},
-      customizations: customizations,
-      price: item.price || item.basePrice || 0,
-      totalPrice:
-        item.totalPrice || item.quantity * (item.price || item.basePrice || 0),
-    };
-  });
-
-  // Check if user is authenticated or guest checkout
-  const orderData = {
-    orderNumber,
-    items: transformedItems,
-    subtotal: subtotal || 0,
-    discount: discount || { code: null, amount: 0 },
-    tax: tax || 0,
-    shipping: shipping || 0,
-    deliveryMethod: deliveryMethod || "shipping",
-    total,
-    shippingAddress: {
+    // SECURITY: Recalculate shipping address
+    const validatedShippingAddress = {
       street:
         shippingAddress?.street ||
         billingInfo?.shippingAddress ||
@@ -100,43 +172,86 @@ const createOrder = (req, res, next) => {
         billingInfo?.zipCode ||
         "",
       country: shippingAddress?.country || billingInfo?.country || "USA",
-    },
-    notes: notes || "",
-    // ⚠️ SECURITY: Order starts as "pending" - ONLY webhook can mark as paid
-    status: "pending",
-    paymentInfo: {
-      method: "card", // Default to card payment
-      status: "pending", // Always starts as pending
-    },
-  };
+    };
 
-  // If user is authenticated, use their ID
-  if (req.user) {
-    orderData.user = req.user._id;
-  } else if (guestInfo || customerInfo) {
-    // Guest checkout - accept either guestInfo or customerInfo
-    orderData.guestInfo = guestInfo || customerInfo;
-  } else {
-    return next(new BadRequestError("User information or guest info required"));
-  }
+    // SECURITY: Recalculate shipping cost using backend logic
+    const shippingCost = calculateShipping(
+      validatedItems,
+      validatedShippingAddress,
+    );
 
-  Order.create(orderData)
-    .then((order) => {
-      return Order.findById(order._id).populate("items.product");
-    })
-    .then((order) => {
-      // Return order with ID so frontend can create checkout session
-      res.status(201).send(order);
-    })
-    .catch((err) => {
-      if (err.name === "ValidationError") {
-        // Extract validation error details
-        const errors = Object.values(err.errors).map((e) => e.message);
-        next(new BadRequestError(`Invalid order data: ${errors.join(", ")}`));
-      } else {
-        next(err);
-      }
+    // SECURITY: Recalculate tax rate based on shipping address
+    const taxRate = getTaxRate(validatedShippingAddress);
+
+    // SECURITY: Recalculate ALL totals using backend logic
+    const calculatedTotals = calculateOrderTotal(validatedItems, {
+      shippingCost,
+      taxRate,
+      discountAmount,
     });
+
+    // Log if frontend values differ from backend calculations (for debugging)
+    const frontendTotal = req.body.total;
+    if (
+      frontendTotal &&
+      Math.abs(frontendTotal - calculatedTotals.total) > 0.02
+    ) {
+      console.warn(
+        `⚠️  Price mismatch detected! Frontend: $${frontendTotal}, Backend: $${calculatedTotals.total}`,
+      );
+      console.warn(`Order: ${orderNumber}`);
+    }
+
+    // Create order data with BACKEND-calculated values
+    const orderData = {
+      orderNumber,
+      items: validatedItems,
+      subtotal: calculatedTotals.subtotal,
+      discount: {
+        code: discountCode,
+        amount: calculatedTotals.discount,
+      },
+      tax: calculatedTotals.tax,
+      shipping: calculatedTotals.shipping,
+      deliveryMethod: deliveryMethod || "shipping",
+      total: calculatedTotals.total, // ✅ Backend-calculated total
+      shippingAddress: validatedShippingAddress,
+      notes: notes || "",
+      // ⚠️ SECURITY: Order starts as "pending" - ONLY webhook can mark as paid
+      status: "pending",
+      paymentInfo: {
+        method: "card",
+        status: "pending",
+      },
+    };
+
+    // If user is authenticated, use their ID
+    if (req.user) {
+      orderData.user = req.user._id;
+    } else if (guestInfo || customerInfo) {
+      // Guest checkout
+      orderData.guestInfo = guestInfo || customerInfo;
+    } else {
+      throw new BadRequestError("User information or guest info required");
+    }
+
+    // Create order
+    const order = await Order.create(orderData);
+    const populatedOrder = await Order.findById(order._id).populate(
+      "items.product",
+    );
+
+    res.status(201).send(populatedOrder);
+  } catch (err) {
+    if (err.name === "ValidationError") {
+      const errors = Object.values(err.errors).map((e) => e.message);
+      next(new BadRequestError(`Invalid order data: ${errors.join(", ")}`));
+    } else if (err.name === "CastError") {
+      next(new BadRequestError("Invalid product ID format"));
+    } else {
+      next(err);
+    }
+  }
 };
 
 // Get all orders for current user
