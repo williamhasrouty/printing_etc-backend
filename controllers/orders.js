@@ -1,6 +1,7 @@
 const Order = require("../models/order");
 const Product = require("../models/product");
 const DiscountCode = require("../models/discountCode");
+const User = require("../models/user");
 const {
   BadRequestError,
   NotFoundError,
@@ -12,6 +13,7 @@ const {
   calculateShipping,
   getTaxRate,
 } = require("../utils/pricing");
+const { sendOrderConfirmation, sendStatusUpdate } = require("../utils/email");
 
 // Create a new order (with BACKEND price validation and recalculation)
 const createOrder = async (req, res, next) => {
@@ -239,6 +241,22 @@ const createOrder = async (req, res, next) => {
     const order = await Order.create(orderData);
     const populatedOrder = await Order.findById(order._id).populate(
       "items.product",
+    // Get user email for confirmation
+    let userEmail = null;
+    if (order.user) {
+      const user = await User.findById(order.user);
+      userEmail = user?.email;
+    } else if (order.guestInfo?.email) {
+      userEmail = order.guestInfo.email;
+    }
+
+    // Send order confirmation email
+    if (userEmail) {
+      sendOrderConfirmation(populatedOrder, userEmail).catch((err) => {
+        console.error("Failed to send order confirmation email:", err);
+      });
+    }
+
     );
 
     res.status(201).send(populatedOrder);
@@ -319,46 +337,89 @@ const getOrderByNumber = (req, res, next) => {
 };
 
 // Update order status (admin only - will add admin middleware later)
-const updateOrderStatus = (req, res, next) => {
-  const { orderId } = req.params;
-  const { status, trackingNumber } = req.body;
+const updateOrderStatus = async (req, res, next) => {
+  try {
+    const { orderId } = req.params;
+    const { status, trackingNumber } = req.body;
 
-  const updateData = {
-    status,
-    updatedAt: Date.now(),
-  };
+    // Get the order before updating to track previous status
+    const previousOrder = await Order.findById(orderId).populate("items.product");
+    
+    if (!previousOrder) {
+      throw new NotFoundError("Order not found");
+    }
 
-  if (trackingNumber) {
-    updateData.trackingNumber = trackingNumber;
+    const previousStatus = previousOrder.status;
+
+    const updateData = {
+      status,
+      updatedAt: Date.now(),
+    };
+
+    if (trackingNumber) {
+      updateData.trackingNumber = trackingNumber;
+    }
+
+    const order = await Order.findByIdAndUpdate(orderId, updateData, {
+      new: true,
+      runValidators: true,
+    }).populate("items.product");
+
+    // Get user email for status update notification
+    let userEmail = null;
+    if (order.user) {
+      const user = await User.findById(order.user);
+      userEmail = user?.email;
+    } else if (order.guestInfo?.email) {
+      userEmail = order.guestInfo.email;
+    }
+async (req, res, next) => {
+  try {
+    const { orderId } = req.params;
+
+    const order = await Order.findById(orderId).populate("items.product");
+    
+    if (!order) {
+      throw new NotFoundError("Order not found");
+    }
+
+    // Check permission
+    if (req.user && order.user && order.user.toString() !== req.user._id) {
+      throw new ForbiddenError("Access denied");
+    }
+
+    // Only allow cancellation if order is pending or confirmed
+    if (!["pending", "confirmed"].includes(order.status)) {
+      throw new BadRequestError("Order cannot be cancelled at this stage");
+    }
+
+    const previousStatus = order.status;
+    order.status = "cancelled";
+    order.updatedAt = Date.now();
+    
+    await order.save();
+
+    // Get user email for cancellation notification
+    let userEmail = null;
+    if (order.user) {
+      const user = await User.findById(order.user);
+      userEmail = user?.email;
+    } else if (order.guestInfo?.email) {
+      userEmail = order.guestInfo.email;
+    }
+
+    // Send cancellation notification
+    if (userEmail) {
+      sendStatusUpdate(order, userEmail, previousStatus).catch((err) => {
+        console.error("Failed to send cancellation email:", err);
+      });
+    }
+
+    res.send(order);
+  } catch (err) {
+    next(err);
   }
-
-  Order.findByIdAndUpdate(orderId, updateData, {
-    new: true,
-    runValidators: true,
-  })
-    .populate("items.product")
-    .then((order) => {
-      if (!order) {
-        throw new NotFoundError("Order not found");
-      }
-      res.send(order);
-    })
-    .catch((err) => {
-      if (err.name === "CastError") {
-        next(new BadRequestError("Invalid order ID"));
-      } else if (err.name === "ValidationError") {
-        next(new BadRequestError("Invalid data provided"));
-      } else {
-        next(err);
-      }
-    });
-};
-
-// Cancel an order
-const cancelOrder = (req, res, next) => {
-  const { orderId } = req.params;
-
-  Order.findById(orderId)
+}rId)
     .then((order) => {
       if (!order) {
         throw new NotFoundError("Order not found");

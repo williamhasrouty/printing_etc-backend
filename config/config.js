@@ -9,6 +9,8 @@ const {
   STRIPE_SECRET_KEY = "",
   STRIPE_WEBHOOK_SECRET = "",
   FRONTEND_URL = "http://localhost:3000",
+  RESEND_API_KEY = "",
+  EMAIL_FROM = "Printing Etc <orders@printingetc.com>",
 } = process.env;
 
 module.exports = {
@@ -22,4 +24,6 @@ module.exports = {
   STRIPE_SECRET_KEY,
   STRIPE_WEBHOOK_SECRET,
   FRONTEND_URL,
+  RESEND_API_KEY,
+  EMAIL_FROM,
 };

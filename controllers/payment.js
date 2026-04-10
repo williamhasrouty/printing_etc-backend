@@ -1,7 +1,9 @@
 const stripe = require("stripe")(require("../config/config").STRIPE_SECRET_KEY);
 const Order = require("../models/order");
+const User = require("../models/user");
 const { BadRequestError, NotFoundError } = require("../errors/errors");
 const { NODE_ENV } = require("../config/config");
+const { sendPaymentReceipt } = require("../utils/email");
 
 /**
  * SECURE PAYMENT FLOW:
@@ -184,7 +186,7 @@ const handleWebhook = async (req, res, next) => {
         if (session.payment_status === "paid") {
           const orderId = session.metadata.orderId;
 
-          const order = await Order.findById(orderId);
+          const order = await Order.findById(orderId).populate("items.product");
           if (order) {
             order.status = "confirmed";
             order.paymentInfo.status = "succeeded";
@@ -196,7 +198,21 @@ const handleWebhook = async (req, res, next) => {
 
             console.log(`✅ Order ${order.orderNumber} marked as PAID`);
 
-            // TODO: Send order confirmation email here
+            // Get user email
+            let userEmail = null;
+            if (order.user) {
+              const user = await User.findById(order.user);
+              userEmail = user?.email;
+            } else if (order.guestInfo?.email) {
+              userEmail = order.guestInfo.email;
+            }
+
+            // Send payment receipt email
+            if (userEmail) {
+              sendPaymentReceipt(order, userEmail).catch((err) => {
+                console.error("Failed to send payment receipt email:", err);
+              });
+            }
           }
         }
         break;
