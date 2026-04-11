@@ -239,15 +239,16 @@ const createOrder = async (req, res, next) => {
 
     // Create order
     const order = await Order.create(orderData);
-    const populatedOrder = await Order.findById(order._id).populate(
-      "items.product",
+    const populatedOrder = await Order.findById(order._id)
+      .populate("items.product")
+      .populate("user", "name email phone");
+
     // Get user email for confirmation
     let userEmail = null;
-    if (order.user) {
-      const user = await User.findById(order.user);
-      userEmail = user?.email;
-    } else if (order.guestInfo?.email) {
-      userEmail = order.guestInfo.email;
+    if (populatedOrder.user) {
+      userEmail = populatedOrder.user.email;
+    } else if (populatedOrder.guestInfo?.email) {
+      userEmail = populatedOrder.guestInfo.email;
     }
 
     // Send order confirmation email
@@ -256,8 +257,6 @@ const createOrder = async (req, res, next) => {
         console.error("Failed to send order confirmation email:", err);
       });
     }
-
-    );
 
     res.status(201).send(populatedOrder);
   } catch (err) {
@@ -343,8 +342,9 @@ const updateOrderStatus = async (req, res, next) => {
     const { status, trackingNumber } = req.body;
 
     // Get the order before updating to track previous status
-    const previousOrder = await Order.findById(orderId).populate("items.product");
-    
+    const previousOrder =
+      await Order.findById(orderId).populate("items.product");
+
     if (!previousOrder) {
       throw new NotFoundError("Order not found");
     }
@@ -373,12 +373,27 @@ const updateOrderStatus = async (req, res, next) => {
     } else if (order.guestInfo?.email) {
       userEmail = order.guestInfo.email;
     }
-async (req, res, next) => {
+
+    // Send status update email if status actually changed
+    if (userEmail && status !== previousStatus) {
+      sendStatusUpdate(order, userEmail, previousStatus).catch((err) => {
+        console.error("Failed to send status update email:", err);
+      });
+    }
+
+    res.send(order);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Cancel order (user can cancel their own pending/confirmed orders)
+const cancelOrder = async (req, res, next) => {
   try {
     const { orderId } = req.params;
 
     const order = await Order.findById(orderId).populate("items.product");
-    
+
     if (!order) {
       throw new NotFoundError("Order not found");
     }
@@ -396,7 +411,7 @@ async (req, res, next) => {
     const previousStatus = order.status;
     order.status = "cancelled";
     order.updatedAt = Date.now();
-    
+
     await order.save();
 
     // Get user email for cancellation notification
@@ -419,36 +434,6 @@ async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-}rId)
-    .then((order) => {
-      if (!order) {
-        throw new NotFoundError("Order not found");
-      }
-
-      // Check permission
-      if (req.user && order.user && order.user.toString() !== req.user._id) {
-        throw new ForbiddenError("Access denied");
-      }
-
-      // Only allow cancellation if order is pending or confirmed
-      if (!["pending", "confirmed"].includes(order.status)) {
-        throw new BadRequestError("Order cannot be cancelled at this stage");
-      }
-
-      order.status = "cancelled";
-      order.updatedAt = Date.now();
-      return order.save();
-    })
-    .then((order) => {
-      res.send(order);
-    })
-    .catch((err) => {
-      if (err.name === "CastError") {
-        next(new BadRequestError("Invalid order ID"));
-      } else {
-        next(err);
-      }
-    });
 };
 
 // Get all orders (admin only - will add admin middleware later)

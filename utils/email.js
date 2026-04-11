@@ -33,6 +33,60 @@ const formatDate = (date) => {
 };
 
 /**
+ * Format product options for display in email
+ */
+const formatProductOptions = (options) => {
+  if (!options || typeof options !== "object") return "";
+
+  // Define important fields to display in order
+  const importantFields = [
+    "paperType",
+    "size",
+    "orientation",
+    "color",
+    "coating",
+    "roundedCorner",
+    "finish",
+    "velvetFinish",
+    "raisedPrint",
+  ];
+
+  // Field name mappings for better display
+  const fieldLabels = {
+    paperType: "Paper",
+    size: "Size",
+    orientation: "Orientation",
+    color: "Color",
+    coating: "Coating",
+    roundedCorner: "Rounded Corners",
+    finish: "Finish",
+    velvetFinish: "Velvet Finish",
+    raisedPrint: "Raised Print",
+  };
+
+  const formattedOptions = [];
+
+  // Process important fields in order
+  importantFields.forEach((field) => {
+    const value = options[field];
+    // Only include if value exists and is not empty
+    if (
+      value &&
+      value.toString().trim() !== "" &&
+      value !== "none" &&
+      value !== "None"
+    ) {
+      const label = fieldLabels[field] || field;
+      formattedOptions.push(`${label}: ${value}`);
+    }
+  });
+
+  return formattedOptions.length > 0
+    ? `<br/><span style="font-size: 13px; color: #666;">${formattedOptions.join(" • ")}</span>`
+    : "";
+};
+
+/**
  * Send order confirmation email
  */
 const sendOrderConfirmation = async (order, userEmail) => {
@@ -49,13 +103,8 @@ const sendOrderConfirmation = async (order, userEmail) => {
         (item) => `
         <tr>
           <td style="padding: 8px; border-bottom: 1px solid #eee;">
-            ${item.productName} ${
-              item.selectedOptions
-                ? `(${Object.entries(item.selectedOptions)
-                    .map(([k, v]) => `${k}: ${v}`)
-                    .join(", ")})`
-                : ""
-            }
+            <strong>${item.productName}</strong>
+            ${formatProductOptions(item.selectedOptions)}
           </td>
           <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: center;">${item.quantity}</td>
           <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: right;">${formatCurrency(item.totalPrice)}</td>
@@ -202,7 +251,8 @@ const sendPaymentReceipt = async (order, userEmail) => {
         (item) => `
         <tr>
           <td style="padding: 8px; border-bottom: 1px solid #eee;">
-            ${item.productName}
+            <strong>${item.productName}</strong>
+            ${formatProductOptions(item.selectedOptions)}
           </td>
           <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: center;">${item.quantity}</td>
           <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: right;">${formatCurrency(item.totalPrice)}</td>
