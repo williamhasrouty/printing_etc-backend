@@ -132,7 +132,7 @@ const sendOrderConfirmation = async (order, userEmail) => {
             <h2 style="margin-top: 0; color: #00b4d8; font-size: 20px;">Order Details</h2>
             <p style="margin: 5px 0;"><strong>Order Number:</strong> ${order.orderNumber}</p>
             <p style="margin: 5px 0;"><strong>Order Date:</strong> ${formatDate(order.createdAt)}</p>
-            <p style="margin: 5px 0;"><strong>Status:</strong> <span style="color: #28a745; font-weight: bold;">${order.status}</span></p>
+            <p style="margin: 5px 0;"><strong>Status:</strong> <span style="color: #28a745; font-weight: bold;">Confirmed</span></p>
           </div>
 
           <h3 style="color: #00b4d8; margin-top: 30px;">Items Ordered</h3>
@@ -184,7 +184,7 @@ const sendOrderConfirmation = async (order, userEmail) => {
             order.shippingAddress
               ? `
           <div style="margin-top: 30px;">
-            <h3 style="color: #00b4d8;">Shipping Address</h3>
+            <h3 style="color: #00b4d8;">${order.deliveryMethod === "pickup" ? "Pick Up Address" : "Shipping Address"}</h3>
             <p style="margin: 5px 0;">${order.shippingAddress.street}</p>
             <p style="margin: 5px 0;">${order.shippingAddress.city}, ${order.shippingAddress.state} ${order.shippingAddress.zipCode}</p>
             <p style="margin: 5px 0;">${order.shippingAddress.country}</p>
@@ -195,7 +195,11 @@ const sendOrderConfirmation = async (order, userEmail) => {
 
           <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 30px 0; border-radius: 4px;">
             <p style="margin: 0; font-size: 14px;"><strong>Next Steps:</strong></p>
-            <p style="margin: 5px 0 0; font-size: 14px;">You will receive a payment receipt once your payment is processed. We'll send you another email when your order ships!</p>
+            <p style="margin: 5px 0 0; font-size: 14px;">${
+              order.deliveryMethod === "pickup"
+                ? "You will receive a payment receipt once your payment is processed. We'll send you another email when your order is ready for pickup!"
+                : "You will receive a payment receipt once your payment is processed. We'll send you another email when your order ships!"
+            }</p>
           </div>
 
           <div style="text-align: center; margin-top: 30px;">
@@ -407,9 +411,15 @@ const sendStatusUpdate = async (order, userEmail, previousStatus) => {
         icon: "✓",
       },
       completed: {
-        title: "Order Completed",
-        message: "Thank you for your business!",
-        color: "#6c757d",
+        title:
+          order.deliveryMethod === "pickup"
+            ? "Order Ready for Pickup"
+            : "Order Completed",
+        message:
+          order.deliveryMethod === "pickup"
+            ? "Your order is ready! You can pick it up at our location during business hours."
+            : "Your order has been completed. Thank you for your business!",
+        color: "#28a745",
         icon: "✓",
       },
       cancelled: {
@@ -419,6 +429,20 @@ const sendStatusUpdate = async (order, userEmail, previousStatus) => {
         icon: "✗",
       },
     };
+
+    // Only send emails for specific status changes
+    const emailableStatuses = ["shipped", "delivered", "cancelled"];
+
+    // For pickup orders, send email when marked as "completed" (ready for pickup)
+    if (order.deliveryMethod === "pickup" && order.status === "completed") {
+      emailableStatuses.push("completed");
+    }
+
+    // Don't send email if status is not in the emailable list
+    if (!emailableStatuses.includes(order.status)) {
+      console.log(`ℹ️  Skipping email for status: ${order.status}`);
+      return true;
+    }
 
     const config = statusConfig[order.status] || statusConfig.confirmed;
 
@@ -461,6 +485,19 @@ const sendStatusUpdate = async (order, userEmail, previousStatus) => {
           <div style="background: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
             <p style="margin: 0; font-size: 14px;"><strong>Was everything perfect?</strong></p>
             <p style="margin: 5px 0 0; font-size: 14px;">We'd love to hear your feedback! If you have any concerns, please don't hesitate to reach out.</p>
+          </div>
+          `
+              : ""
+          }
+
+          ${
+            order.status === "completed" && order.deliveryMethod === "pickup"
+              ? `
+          <div style="background: #d4edda; border-left: 4px solid #28a745; padding: 15px; margin: 20px 0; border-radius: 4px;">
+            <p style="margin: 0; font-size: 14px;"><strong>Pickup Location</strong></p>
+            <p style="margin: 5px 0 0; font-size: 14px;">1747 E Ave Q Ste B2, Palmdale, CA 93550</p>
+            <p style="margin: 5px 0 0; font-size: 14px;"><strong>Phone:</strong> (661) 272-2869</p>
+            <p style="margin: 10px 0 0; font-size: 13px; color: #666;">Please have your order number ready when picking up.</p>
           </div>
           `
               : ""
