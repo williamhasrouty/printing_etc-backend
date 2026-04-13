@@ -14,16 +14,47 @@ cloudinary.config({
 });
 
 // Upload file buffer to Cloudinary
-const uploadToCloudinary = (fileBuffer, folder = "printing-etc") => {
+const uploadToCloudinary = (
+  fileBuffer,
+  folder = "printing-etc",
+  mimetype = "",
+  filename = "",
+) => {
   return new Promise((resolve, reject) => {
+    // Determine resource type - PDFs must use "raw", images can use "auto"
+    const isPDF = mimetype === "application/pdf";
+    const resourceType = isPDF ? "raw" : "auto";
+
+    // For raw files, extract extension from filename to preserve file type
+    let publicIdOptions = {};
+    if (resourceType === "raw" && filename) {
+      // Use filename without extension as public_id (Cloudinary will add format)
+      const nameWithoutExt = filename.replace(/\.[^.]+$/, "");
+      const ext = filename.match(/\.([^.]+)$/)?.[1] || "";
+      publicIdOptions = {
+        public_id: `${folder}/${nameWithoutExt}_${Date.now()}`,
+        format: ext, // Explicitly set format to preserve extension
+      };
+    }
+
     const uploadStream = cloudinary.uploader.upload_stream(
       {
         folder,
-        resource_type: "auto", // Automatically detect file type
-        allowed_formats: ["jpg", "jpeg", "png", "pdf", "ai", "psd", "eps"],
+        resource_type: resourceType,
+        ...publicIdOptions,
+        // Don't set allowed_formats for raw uploads
+        ...(resourceType !== "raw" && {
+          allowed_formats: ["jpg", "jpeg", "png", "ai", "psd", "eps"],
+        }),
+        // For PDFs and raw files, prevent any conversion or processing
+        ...(resourceType === "raw" && {
+          flags: "attachment", // Serve as download, not preview
+          quality_analysis: false, // Disable quality analysis
+        }),
       },
       (error, result) => {
         if (error) {
+          console.error("Cloudinary upload error:", error);
           reject(error);
         } else {
           resolve({
@@ -48,7 +79,7 @@ const deleteFromCloudinary = (publicId) => {
 // Upload multiple files
 const uploadMultipleToCloudinary = async (files, folder = "printing-etc") => {
   const uploadPromises = files.map((file) =>
-    uploadToCloudinary(file.buffer, folder),
+    uploadToCloudinary(file.buffer, folder, file.mimetype, file.originalname),
   );
   return Promise.all(uploadPromises);
 };

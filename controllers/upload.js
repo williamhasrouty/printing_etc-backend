@@ -11,10 +11,20 @@ const uploadFile = async (req, res, next) => {
       throw new BadRequestError("No file provided");
     }
 
+    console.log("Upload request received:", {
+      filename: req.file.originalname,
+      mimetype: req.file.mimetype,
+      size: req.file.size,
+    });
+
     const result = await uploadToCloudinary(
       req.file.buffer,
       "printing-etc/uploads",
+      req.file.mimetype,
+      req.file.originalname,
     );
+
+    console.log("Upload successful:", result.publicId);
 
     res.status(200).send({
       url: result.url,
@@ -24,6 +34,8 @@ const uploadFile = async (req, res, next) => {
       name: req.file.originalname,
     });
   } catch (err) {
+    console.error("Upload controller error:", err.message);
+    console.error("Full error stack:", err.stack);
     next(err);
   }
 };
