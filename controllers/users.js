@@ -102,13 +102,17 @@ const getCurrentUser = (req, res, next) => {
 
 // Update user profile
 const updateUser = (req, res, next) => {
-  const { name, phone } = req.body;
+  const { name, phone, email } = req.body;
 
-  User.findByIdAndUpdate(
-    req.user._id,
-    { name, phone },
-    { new: true, runValidators: true },
-  )
+  const updates = {};
+  if (name !== undefined) updates.name = name;
+  if (phone !== undefined) updates.phone = phone;
+  if (email !== undefined) updates.email = email;
+
+  User.findByIdAndUpdate(req.user._id, updates, {
+    new: true,
+    runValidators: true,
+  })
     .then((user) => {
       if (!user) {
         throw new NotFoundError("User not found");
@@ -121,7 +125,9 @@ const updateUser = (req, res, next) => {
       });
     })
     .catch((err) => {
-      if (err.name === "ValidationError") {
+      if (err.code === 11000) {
+        next(new ConflictError("Email already exists"));
+      } else if (err.name === "ValidationError") {
         next(new BadRequestError("Invalid data provided"));
       } else {
         next(err);

@@ -21,6 +21,7 @@ const validateSignin = celebrate({
 // Validation for updating user profile
 const validateUpdateUser = celebrate({
   body: Joi.object().keys({
+    email: Joi.string().email(),
     name: Joi.string().min(2).max(50),
     phone: Joi.string(),
   }),
