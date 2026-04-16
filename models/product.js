@@ -15,7 +15,7 @@ const productSchema = new mongoose.Schema({
   },
   category: {
     type: String,
-    required: true,
+    required: false,
     enum: [
       "business-cards",
       "flyers",
