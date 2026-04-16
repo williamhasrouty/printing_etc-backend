@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 const User = require("../models/user");
 const {
   BadRequestError,
@@ -8,6 +9,7 @@ const {
   ConflictError,
 } = require("../errors/errors");
 const { JWT_SECRET } = require("../config/config");
+const { sendPasswordResetEmail } = require("../utils/email");
 
 // Create a new user (signup)
 const createUser = (req, res, next) => {
@@ -281,6 +283,87 @@ const updatePassword = (req, res, next) => {
     .catch(next);
 };
 
+// Request password reset
+const forgotPassword = (req, res, next) => {
+  const { email } = req.body;
+
+  User.findOne({ email })
+    .select("+resetPasswordToken +resetPasswordExpires")
+    .then((user) => {
+      if (!user) {
+        // Don't reveal if user exists for security
+        return res.send({
+          message:
+            "If an account exists with this email, you will receive password reset instructions shortly.",
+        });
+      }
+
+      // Generate reset token
+      const resetToken = crypto.randomBytes(32).toString("hex");
+      const hashedToken = crypto
+        .createHash("sha256")
+        .update(resetToken)
+        .digest("hex");
+
+      // Set reset token and expiration (1 hour)
+      user.resetPasswordToken = hashedToken;
+      user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+
+      return user.save().then(() => {
+        // Send reset email
+        sendPasswordResetEmail(user.email, resetToken)
+          .then(() => {
+            res.send({
+              message:
+                "If an account exists with this email, you will receive password reset instructions shortly.",
+            });
+          })
+          .catch((err) => {
+            console.error("Failed to send password reset email:", err);
+            // Still return success message for security
+            res.send({
+              message:
+                "If an account exists with this email, you will receive password reset instructions shortly.",
+            });
+          });
+      });
+    })
+    .catch(next);
+};
+
+// Reset password with token
+const resetPassword = (req, res, next) => {
+  const { token, newPassword } = req.body;
+
+  // Hash the token to compare with database
+  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+  User.findOne({
+    resetPasswordToken: hashedToken,
+    resetPasswordExpires: { $gt: Date.now() },
+  })
+    .select("+resetPasswordToken +resetPasswordExpires +password")
+    .then((user) => {
+      if (!user) {
+        throw new BadRequestError("Invalid or expired reset token");
+      }
+
+      // Hash new password and clear reset fields
+      return bcrypt.hash(newPassword, 10).then((hash) => {
+        user.password = hash;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
+        return user.save();
+      });
+    })
+    .then((user) => {
+      res.send({
+        message: "Password successfully reset. You can now log in.",
+      });
+    })
+    .catch(next);
+};
+
 module.exports = {
   createUser,
   login,
@@ -290,4 +373,6 @@ module.exports = {
   addAddress,
   updateAddress,
   deleteAddress,
+  forgotPassword,
+  resetPassword,
 };

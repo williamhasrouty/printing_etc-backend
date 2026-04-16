@@ -1,6 +1,16 @@
 const router = require("express").Router();
-const { createUser, login } = require("../controllers/users");
-const { validateSignup, validateSignin } = require("../middlewares/validation");
+const {
+  createUser,
+  login,
+  forgotPassword,
+  resetPassword,
+} = require("../controllers/users");
+const {
+  validateSignup,
+  validateSignin,
+  validateForgotPassword,
+  validateResetPassword,
+} = require("../middlewares/validation");
 const auth = require("../middlewares/auth");
 const usersRouter = require("./users");
 const productsRouter = require("./products");
@@ -12,6 +22,8 @@ const discountsRouter = require("./discounts");
 // Public routes (no authentication required)
 router.post("/signup", validateSignup, createUser);
 router.post("/signin", validateSignin, login);
+router.post("/forgot-password", validateForgotPassword, forgotPassword);
+router.post("/reset-password", validateResetPassword, resetPassword);
 
 // Products routes (public for viewing, auth for admin only operations)
 router.use("/products", productsRouter);

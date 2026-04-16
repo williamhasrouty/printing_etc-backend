@@ -539,8 +539,80 @@ const sendStatusUpdate = async (order, userEmail, previousStatus) => {
   }
 };
 
+/**
+ * Send password reset email
+ */
+const sendPasswordResetEmail = async (userEmail, resetToken) => {
+  if (!resend) {
+    console.warn(
+      "⚠️  Email service not configured. Skipping password reset email.",
+    );
+    return false;
+  }
+
+  try {
+    const resetUrl = `${FRONTEND_URL}/reset-password?token=${resetToken}`;
+
+    const html = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="utf-8">
+        <title>Password Reset Request</title>
+      </head>
+      <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <div style="background: #00b4d8; padding: 30px; text-align: center; border-radius: 8px 8px 0 0;">
+          <h1 style="color: white; margin: 0; font-size: 28px;">🔒 Password Reset Request</h1>
+        </div>
+        
+        <div style="background: #ffffff; padding: 30px; border: 1px solid #e0e0e0; border-top: none; border-radius: 0 0 8px 8px;">
+          <p style="font-size: 16px; margin-top: 0;">Hello,</p>
+          
+          <p style="font-size: 16px;">You recently requested to reset your password for your Printing Etc account. Click the button below to reset it:</p>
+          
+          <div style="text-align: center; margin: 30px 0;">
+            <a href="${resetUrl}" style="background: #00b4d8; color: white; padding: 14px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 16px; display: inline-block;">Reset Password</a>
+          </div>
+          
+          <p style="font-size: 14px; color: #666;">Or copy and paste this link into your browser:</p>
+          <p style="font-size: 13px; color: #00b4d8; word-break: break-all; background: #f8f9fa; padding: 10px; border-radius: 4px;">${resetUrl}</p>
+          
+          <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
+            <p style="margin: 0; font-size: 14px;"><strong>⚠️ Important:</strong></p>
+            <p style="margin: 5px 0 0; font-size: 14px;">This password reset link will expire in 1 hour for security reasons.</p>
+          </div>
+          
+          <p style="font-size: 14px; color: #666; margin-top: 30px;">If you didn't request a password reset, you can safely ignore this email. Your password will remain unchanged.</p>
+          
+          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
+            <p style="font-size: 13px; color: #999; margin: 5px 0;">Thanks,</p>
+            <p style="font-size: 13px; color: #999; margin: 5px 0;">The Printing Etc Team</p>
+            <p style="font-size: 13px; color: #999; margin: 15px 0 5px;">1747 E Ave Q Ste B2, Palmdale, CA 93550</p>
+            <p style="font-size: 13px; color: #999; margin: 5px 0;">(661) 272-2869</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `;
+
+    const data = await resend.emails.send({
+      from: EMAIL_FROM,
+      to: userEmail,
+      subject: "Password Reset Request - Printing Etc",
+      html: html,
+    });
+
+    console.log(`✅ Password reset email sent to ${userEmail} (${data.id})`);
+    return true;
+  } catch (error) {
+    console.error("❌ Error sending password reset email:", error);
+    throw error;
+  }
+};
+
 module.exports = {
   sendOrderConfirmation,
   sendPaymentReceipt,
   sendStatusUpdate,
+  sendPasswordResetEmail,
 };

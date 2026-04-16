@@ -35,6 +35,21 @@ const validateUpdatePassword = celebrate({
   }),
 });
 
+// Validation for forgot password
+const validateForgotPassword = celebrate({
+  body: Joi.object().keys({
+    email: Joi.string().required().email(),
+  }),
+});
+
+// Validation for reset password
+const validateResetPassword = celebrate({
+  body: Joi.object().keys({
+    token: Joi.string().required(),
+    newPassword: Joi.string().required().min(8),
+  }),
+});
+
 // Validation for product ID parameter
 const validateProductId = celebrate({
   params: Joi.object().keys({
@@ -352,6 +367,8 @@ module.exports = {
   validateSignin,
   validateUpdateUser,
   validateUpdatePassword,
+  validateForgotPassword,
+  validateResetPassword,
   validateProductId,
   validateCreateProduct,
   validateUpdateProduct,
