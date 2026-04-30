@@ -137,7 +137,7 @@ const getTaxRate = (address) => {
 
   // Example state tax rates
   const stateTaxRates = {
-    CA: 0.0725, // California
+    CA: 0.1125, // California (Palmdale combined rate)
     TX: 0.0625, // Texas
     NY: 0.08, // New York
     FL: 0.06, // Florida

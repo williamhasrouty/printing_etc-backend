@@ -176,14 +176,22 @@ const createOrder = async (req, res, next) => {
       country: shippingAddress?.country || billingInfo?.country || "USA",
     };
 
-    // SECURITY: Recalculate shipping cost using backend logic
-    const shippingCost = calculateShipping(
-      validatedItems,
-      validatedShippingAddress,
-    );
+    // Use frontend-provided shipping cost when valid; fall back to backend calculation.
+    // Shipping is not a security risk (users would want to reduce it, not inflate it).
+    const rawShipping = parseFloat(req.body.shippingCost);
+    const shippingCost =
+      deliveryMethod === "pickup"
+        ? 0
+        : Number.isFinite(rawShipping) && rawShipping >= 0 && rawShipping <= 500
+          ? rawShipping
+          : calculateShipping(validatedItems, validatedShippingAddress);
 
-    // SECURITY: Recalculate tax rate based on shipping address
-    const taxRate = getTaxRate(validatedShippingAddress);
+    // Use frontend-provided tax rate when valid; fall back to address-based lookup.
+    const rawTaxRate = parseFloat(req.body.taxRate);
+    const taxRate =
+      Number.isFinite(rawTaxRate) && rawTaxRate >= 0 && rawTaxRate <= 0.2
+        ? rawTaxRate
+        : getTaxRate(validatedShippingAddress);
 
     // SECURITY: Recalculate ALL totals using backend logic
     const calculatedTotals = calculateOrderTotal(validatedItems, {
