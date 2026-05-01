@@ -2,7 +2,11 @@ const {
   uploadToCloudinary,
   uploadMultipleToCloudinary,
 } = require("../utils/cloudinary");
-const { BadRequestError } = require("../errors/errors");
+const {
+  BadRequestError,
+  ForbiddenError,
+  NotFoundError,
+} = require("../errors/errors");
 
 // Upload single file
 const uploadFile = async (req, res, next) => {
@@ -69,56 +73,71 @@ const uploadFiles = async (req, res, next) => {
 // Proxy download a file from Cloudinary (avoids cross-origin restrictions in browser)
 const downloadFile = async (req, res, next) => {
   try {
-    const { url } = req.query;
+    const { url, filename: queryFilename } = req.query;
 
     if (!url || !url.startsWith("https://res.cloudinary.com/")) {
       throw new BadRequestError("Invalid file URL");
     }
 
-    // Extract public_id and resource_type from the Cloudinary URL
-    // URL format: https://res.cloudinary.com/{cloud}/{resource_type}/upload/v{ver}/{public_id}.{ext}
-    // Fully decode the pathname to handle single or double URL-encoding (%20 or %2520 spaces)
-    const urlObj = new URL(url);
-    const decodedPathname = decodeURIComponent(urlObj.pathname);
-    const pathParts = decodedPathname.split("/").filter(Boolean);
-    // pathParts: [cloud_name, resource_type, 'upload', 'v123', ...public_id_parts]
-    const resourceType = pathParts[1] || "image";
-    const uploadIndex = pathParts.indexOf("upload");
-    let startIndex = uploadIndex + 1;
-    // Skip version segment (e.g. v1234567)
-    if (pathParts[startIndex] && /^v\d+$/.test(pathParts[startIndex])) {
-      startIndex++;
+    // Fetch the Cloudinary URL directly.
+    let response = await fetch(url);
+
+    // Some older raw URLs were stored with a .pdf suffix variant that can return
+    // 401/404 depending on account settings. Retry without the suffix when applicable.
+    if (
+      !response.ok &&
+      /\/raw\/upload\//.test(url) &&
+      /\.pdf($|\?)/i.test(url)
+    ) {
+      const retryUrl = url.replace(/\.pdf(?=$|\?)/i, "");
+      const retryResponse = await fetch(retryUrl);
+      if (retryResponse.ok) {
+        response = retryResponse;
+      }
     }
-    const filenamePart = pathParts[pathParts.length - 1];
-    const ext = filenamePart.includes(".") ? filenamePart.split(".").pop() : "";
-    const publicId = pathParts
-      .slice(startIndex)
-      .join("/")
-      .replace(/\.[^.]+$/, "");
 
-    const { cloudinary } = require("../utils/cloudinary");
-
-    // Generate a signed private download URL — bypasses "untrusted account" restriction
-    const signedUrl = cloudinary.utils.private_download_url(publicId, ext, {
-      resource_type: resourceType,
-      type: "upload",
-      attachment: true,
-    });
-
-    const response = await fetch(signedUrl);
     if (!response.ok) {
-      throw new Error(`Cloudinary fetch failed: ${response.status}`);
+      if (response.status === 404) {
+        throw new NotFoundError("File not found in Cloudinary");
+      }
+
+      if (response.status === 401 || response.status === 403) {
+        throw new ForbiddenError(
+          "File access is restricted in Cloudinary for this legacy URL",
+        );
+      }
+
+      throw new BadRequestError(`Cloudinary fetch failed: ${response.status}`);
     }
 
+    // Use the original filename passed from Admin.jsx (stored in the order as file.name)
+    // so the admin receives the file with the customer's original filename.
+    const urlFilename = decodeURIComponent(
+      new URL(url).pathname.split("/").pop(),
+    );
+    const deliveryFilename = queryFilename || urlFilename;
+
+    const ext = deliveryFilename.split(".").pop().toLowerCase();
+    const mimeMap = {
+      pdf: "application/pdf",
+      png: "image/png",
+      jpg: "image/jpeg",
+      jpeg: "image/jpeg",
+      svg: "image/svg+xml",
+    };
     const contentType =
-      response.headers.get("content-type") || "application/octet-stream";
+      mimeMap[ext] ||
+      response.headers.get("content-type") ||
+      "application/octet-stream";
 
-    const filename = decodeURIComponent(filenamePart);
     res.setHeader("Content-Type", contentType);
-    res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${deliveryFilename}"`,
+    );
 
-    const buffer = await response.arrayBuffer();
-    res.send(Buffer.from(buffer));
+    const buffer = Buffer.from(await response.arrayBuffer());
+    res.send(buffer);
   } catch (err) {
     console.error("Download proxy error:", err.message);
     next(err);

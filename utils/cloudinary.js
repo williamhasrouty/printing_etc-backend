@@ -21,10 +21,22 @@ const uploadToCloudinary = (
   filename = "",
 ) => {
   return new Promise((resolve, reject) => {
-    // Use "auto" for all files including PDFs.
-    // "raw" resource type requires authentication on free Cloudinary accounts.
-    // Cloudinary supports PDFs under the "image" type (auto-detected) and serves them publicly.
-    const resourceType = "auto";
+    // Use "image" for PDFs and image files so Cloudinary generates previews and thumbnails
+    // in the Media Library. For all other file types (zip, etc.), fall back to "raw".
+    // NOTE: Requires "Restrict PDF and ZIP file delivery" to be DISABLED in Cloudinary
+    // Dashboard → Settings → Security, otherwise PDF delivery will return 401.
+    const IMAGE_AND_PDF_TYPES = [
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+      "image/svg+xml",
+      "image/tiff",
+      "application/pdf",
+    ];
+    const resourceType = IMAGE_AND_PDF_TYPES.includes(mimetype)
+      ? "image"
+      : "raw";
 
     // Preserve original filename as public_id
     let publicIdOptions = {};
