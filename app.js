@@ -43,7 +43,11 @@ app.use(xss());
 const corsOptions = {
   origin:
     NODE_ENV === "production"
-      ? ["https://printingetc.com", "https://www.printingetc.com"]
+      ? [
+          "https://printingetc.com",
+          "https://www.printingetc.com",
+          "https://williamhasrouty.github.io",
+        ]
       : "*",
   credentials: true,
 };
