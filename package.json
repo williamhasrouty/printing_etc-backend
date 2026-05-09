@@ -7,7 +7,10 @@
     "lint": "npx eslint .",
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "seed": "node seeds/products.js"
+    "backup": "node scripts/backupDatabase.js",
+    "restore": "CONFIRM_RESTORE=yes node scripts/restoreDatabase.js",
+    "add-products": "node scripts/addMissingProducts.js",
+    "create-admin": "node scripts/createAdmin.js"
   },
   "keywords": [
     "printing",

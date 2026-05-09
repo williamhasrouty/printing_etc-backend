@@ -2,6 +2,16 @@
 
 Backend API for Printing Etc - A printing and stationery e-commerce platform.
 
+## ⚠️ Database Management
+
+**IMPORTANT:** Always use the admin panel to edit products, or use the safe database scripts.
+
+- 📖 **Read the database guide:** [scripts/README-DATABASE-MANAGEMENT.md](scripts/README-DATABASE-MANAGEMENT.md)
+- 💾 **Backup your data regularly:** `npm run backup`
+- ✅ **Safe product management:** Use the admin panel at `/admin`
+
+**Never use the old seed script** - it deletes all your data!
+
 ## Features
 
 - **JWT-based Authentication**: Secure user authentication with JSON Web Tokens

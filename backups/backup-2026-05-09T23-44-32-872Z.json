@@ -1,0 +1,1291 @@
+{
+  "timestamp": "2026-05-09T23:44:32.881Z",
+  "collections": {
+    "products": [
+      {
+        "_id": "69ffc4b564f2b4d530fad4ba",
+        "name": "Business Cards",
+        "description": "Professional business cards printed on premium cardstock. Perfect for networking and making a lasting impression.",
+        "category": "business-cards",
+        "basePrice": 35,
+        "imageUrl": "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003091/printing-etc/products/business-card-stock.png",
+        "images": [
+          "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003091/printing-etc/products/business-card-stock.png"
+        ],
+        "options": {
+          "quantities": [
+            {
+              "name": "500",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4bb"
+            },
+            {
+              "name": "1000",
+              "priceModifier": 13,
+              "_id": "69ffc4b564f2b4d530fad4bc"
+            },
+            {
+              "name": "2500",
+              "priceModifier": 40,
+              "_id": "69ffc4b564f2b4d530fad4bd"
+            },
+            {
+              "name": "5000",
+              "priceModifier": 85,
+              "_id": "69ffc4b564f2b4d530fad4be"
+            },
+            {
+              "name": "7500",
+              "priceModifier": 130,
+              "_id": "69ffc4b564f2b4d530fad4bf"
+            },
+            {
+              "name": "10000",
+              "priceModifier": 175,
+              "_id": "69ffc4b564f2b4d530fad4c0"
+            },
+            {
+              "name": "15000",
+              "priceModifier": 260,
+              "_id": "69ffc4b564f2b4d530fad4c1"
+            },
+            {
+              "name": "25000",
+              "priceModifier": 415,
+              "_id": "69ffc4b564f2b4d530fad4c2"
+            }
+          ],
+          "sizes": [
+            {
+              "name": "Standard (3.5\" x 2\")",
+              "dimensions": "3.5x2",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4c3"
+            },
+            {
+              "name": "Square (2.5\" x 2.5\")",
+              "dimensions": "2.5x2.5",
+              "priceModifier": 5,
+              "_id": "69ffc4b564f2b4d530fad4c4"
+            }
+          ],
+          "orientations": [
+            {
+              "name": "Horizontal",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4c5"
+            },
+            {
+              "name": "Vertical",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4c6"
+            }
+          ],
+          "paperTypes": [
+            {
+              "name": "16pt Gloss",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4c7"
+            },
+            {
+              "name": "16pt Uncoated",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4c8"
+            },
+            {
+              "name": "16pt Matte",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4c9"
+            },
+            {
+              "name": "13pt Premium Linen",
+              "priceModifier": 13,
+              "_id": "69ffc4b564f2b4d530fad4ca"
+            },
+            {
+              "name": "24 pt. Trifecta Green",
+              "priceModifier": 63,
+              "_id": "69ffc4b564f2b4d530fad4cb"
+            },
+            {
+              "name": "38 pt. Trifecta Black",
+              "priceModifier": 90,
+              "_id": "69ffc4b564f2b4d530fad4cc"
+            },
+            {
+              "name": "38 pt. Trifecta Blue",
+              "priceModifier": 90,
+              "_id": "69ffc4b564f2b4d530fad4cd"
+            },
+            {
+              "name": "38 pt. Trifecta Red",
+              "priceModifier": 90,
+              "_id": "69ffc4b564f2b4d530fad4ce"
+            }
+          ],
+          "colors": [
+            {
+              "name": "Full Color Front, No Back",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4cf"
+            },
+            {
+              "name": "Full Color Front, Grayscale Back",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4d0"
+            },
+            {
+              "name": "Full Color Both Sides",
+              "priceModifier": 10,
+              "_id": "69ffc4b564f2b4d530fad4d1"
+            }
+          ],
+          "roundedCorners": [
+            {
+              "name": "No",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4d2"
+            },
+            {
+              "name": "Yes",
+              "priceModifier": 15,
+              "_id": "69ffc4b564f2b4d530fad4d3"
+            }
+          ],
+          "coatings": [
+            {
+              "name": "Matte Aqueous Coating - Front",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4d4"
+            },
+            {
+              "name": "Matte Aqueous Coating - Both Sides",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4d5"
+            },
+            {
+              "name": "UV Gloss Coating - Front",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4d6"
+            },
+            {
+              "name": "UV Gloss Coating - Both Sides",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4d7"
+            }
+          ],
+          "raisedPrint": [
+            {
+              "name": "None",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4d8"
+            },
+            {
+              "name": "Raised UV Print Front",
+              "priceModifier": 30,
+              "_id": "69ffc4b564f2b4d530fad4d9"
+            },
+            {
+              "name": "Raised UV Both Sides",
+              "priceModifier": 40,
+              "_id": "69ffc4b564f2b4d530fad4da"
+            },
+            {
+              "name": "Raised Foil Print Front",
+              "priceModifier": 30,
+              "_id": "69ffc4b564f2b4d530fad4db"
+            },
+            {
+              "name": "Raised Foil Print Both Sides",
+              "priceModifier": 40,
+              "_id": "69ffc4b564f2b4d530fad4dc"
+            }
+          ],
+          "customOptions": {
+            "velvetfinish": {
+              "label": "Velvet Finish",
+              "options": [
+                {
+                  "name": "None",
+                  "priceModifier": 0
+                },
+                {
+                  "name": "Velvet Finish - Front",
+                  "priceModifier": 35
+                },
+                {
+                  "name": "Velvet Finish - Both Sides",
+                  "priceModifier": 50
+                }
+              ]
+            }
+          },
+          "finishes": []
+        },
+        "inStock": true,
+        "featured": true,
+        "position": 1,
+        "pricing": [],
+        "createdAt": "2026-05-09T23:35:17.382Z",
+        "updatedAt": "2026-05-09T23:35:17.382Z",
+        "__v": 0
+      },
+      {
+        "_id": "69ffc4b564f2b4d530fad4dd",
+        "name": "Flyers",
+        "description": "Eye-catching flyers for events, promotions, and announcements. Available in multiple sizes.",
+        "category": "flyers",
+        "basePrice": 0.25,
+        "imageUrl": "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003092/printing-etc/products/flyer-photo.webp",
+        "images": [
+          "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003092/printing-etc/products/flyer-photo.webp"
+        ],
+        "options": {
+          "sizes": [
+            {
+              "name": "8.5\" x 11\"",
+              "dimensions": "8.5x11",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4de"
+            },
+            {
+              "name": "11\" x 17\"",
+              "dimensions": "11x17",
+              "priceModifier": 0.5,
+              "_id": "69ffc4b564f2b4d530fad4df"
+            }
+          ],
+          "paperTypes": [
+            {
+              "name": "Standard (80 lb)",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4e0"
+            },
+            {
+              "name": "Premium (100 lb)",
+              "priceModifier": 0.1,
+              "_id": "69ffc4b564f2b4d530fad4e1"
+            },
+            {
+              "name": "Glossy (100 lb)",
+              "priceModifier": 0.15,
+              "_id": "69ffc4b564f2b4d530fad4e2"
+            }
+          ],
+          "colors": [
+            {
+              "name": "Full Color",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4e3"
+            },
+            {
+              "name": "Black & White",
+              "priceModifier": -0.1,
+              "_id": "69ffc4b564f2b4d530fad4e4"
+            }
+          ],
+          "quantities": [],
+          "orientations": [],
+          "finishes": [],
+          "roundedCorners": [],
+          "coatings": [],
+          "raisedPrint": []
+        },
+        "inStock": true,
+        "featured": true,
+        "position": 2,
+        "pricing": [],
+        "createdAt": "2026-05-09T23:35:17.382Z",
+        "updatedAt": "2026-05-09T23:35:17.382Z",
+        "__v": 0
+      },
+      {
+        "_id": "69ffc4b564f2b4d530fad4e5",
+        "name": "Brochures",
+        "description": "Tri-fold brochures perfect for showcasing your products and services in detail.",
+        "category": "brochures",
+        "basePrice": 0.45,
+        "imageUrl": "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003093/printing-etc/products/brochure.webp",
+        "images": [
+          "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003093/printing-etc/products/brochure.webp"
+        ],
+        "options": {
+          "sizes": [
+            {
+              "name": "8.5\" x 11\" Tri-fold",
+              "dimensions": "8.5x11-tri",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4e6"
+            },
+            {
+              "name": "11\" x 17\" Bi-fold",
+              "dimensions": "11x17-bi",
+              "priceModifier": 1,
+              "_id": "69ffc4b564f2b4d530fad4e7"
+            }
+          ],
+          "paperTypes": [
+            {
+              "name": "Standard (100 lb)",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4e8"
+            },
+            {
+              "name": "Premium (130 lb)",
+              "priceModifier": 0.5,
+              "_id": "69ffc4b564f2b4d530fad4e9"
+            },
+            {
+              "name": "Glossy (130 lb)",
+              "priceModifier": 0.75,
+              "_id": "69ffc4b564f2b4d530fad4ea"
+            }
+          ],
+          "finishes": [
+            {
+              "name": "Matte",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4eb"
+            },
+            {
+              "name": "Glossy",
+              "priceModifier": 0.25,
+              "_id": "69ffc4b564f2b4d530fad4ec"
+            }
+          ],
+          "quantities": [],
+          "orientations": [],
+          "colors": [],
+          "roundedCorners": [],
+          "coatings": [],
+          "raisedPrint": []
+        },
+        "inStock": true,
+        "featured": false,
+        "position": 3,
+        "pricing": [],
+        "createdAt": "2026-05-09T23:35:17.382Z",
+        "updatedAt": "2026-05-09T23:35:17.382Z",
+        "__v": 0
+      },
+      {
+        "_id": "69ffc4b564f2b4d530fad4ed",
+        "name": "Posters",
+        "description": "Large format posters for maximum visibility. Great for events, promotions, and advertising.",
+        "category": "posters",
+        "basePrice": 2.5,
+        "imageUrl": "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003094/printing-etc/products/poster.png",
+        "images": [
+          "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003094/printing-etc/products/poster.png"
+        ],
+        "options": {
+          "sizes": [
+            {
+              "name": "18\" x 24\"",
+              "dimensions": "18x24",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4ee"
+            },
+            {
+              "name": "24\" x 36\"",
+              "dimensions": "24x36",
+              "priceModifier": 10,
+              "_id": "69ffc4b564f2b4d530fad4ef"
+            }
+          ],
+          "paperTypes": [
+            {
+              "name": "Standard Poster Paper",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4f0"
+            },
+            {
+              "name": "Premium Photo Paper",
+              "priceModifier": 10,
+              "_id": "69ffc4b564f2b4d530fad4f1"
+            },
+            {
+              "name": "Canvas",
+              "priceModifier": 25,
+              "_id": "69ffc4b564f2b4d530fad4f2"
+            }
+          ],
+          "finishes": [
+            {
+              "name": "Matte",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4f3"
+            },
+            {
+              "name": "Glossy",
+              "priceModifier": 5,
+              "_id": "69ffc4b564f2b4d530fad4f4"
+            }
+          ],
+          "quantities": [],
+          "orientations": [],
+          "colors": [],
+          "roundedCorners": [],
+          "coatings": [],
+          "raisedPrint": []
+        },
+        "inStock": true,
+        "featured": true,
+        "position": 4,
+        "pricing": [],
+        "createdAt": "2026-05-09T23:35:17.382Z",
+        "updatedAt": "2026-05-09T23:35:17.382Z",
+        "__v": 0
+      },
+      {
+        "_id": "69ffc4b564f2b4d530fad4f5",
+        "name": "Banners",
+        "description": "Durable vinyl banners for indoor and outdoor use. Weather-resistant and long-lasting.",
+        "category": "banners",
+        "basePrice": 5,
+        "imageUrl": "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003094/printing-etc/products/vinyl-banners.webp",
+        "images": [
+          "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003094/printing-etc/products/vinyl-banners.webp"
+        ],
+        "options": {
+          "sizes": [
+            {
+              "name": "2' x 4'",
+              "dimensions": "2x4",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4f6"
+            },
+            {
+              "name": "3' x 6'",
+              "dimensions": "3x6",
+              "priceModifier": 30,
+              "_id": "69ffc4b564f2b4d530fad4f7"
+            },
+            {
+              "name": "4' x 8'",
+              "dimensions": "4x8",
+              "priceModifier": 60,
+              "_id": "69ffc4b564f2b4d530fad4f8"
+            }
+          ],
+          "quantities": [],
+          "orientations": [],
+          "paperTypes": [],
+          "finishes": [],
+          "colors": [],
+          "roundedCorners": [],
+          "coatings": [],
+          "raisedPrint": []
+        },
+        "inStock": true,
+        "featured": false,
+        "position": 5,
+        "pricing": [],
+        "createdAt": "2026-05-09T23:35:17.383Z",
+        "updatedAt": "2026-05-09T23:35:17.383Z",
+        "__v": 0
+      },
+      {
+        "_id": "69ffc4b564f2b4d530fad4f9",
+        "name": "Stickers",
+        "description": "Custom stickers in any shape or size. Perfect for branding, packaging, and promotions.",
+        "category": "stickers",
+        "basePrice": 0.2,
+        "imageUrl": "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003096/printing-etc/products/sticker-stock-photo.jpg",
+        "images": [
+          "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003096/printing-etc/products/sticker-stock-photo.jpg"
+        ],
+        "options": {
+          "sizes": [
+            {
+              "name": "2\" x 2\"",
+              "dimensions": "2x2",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4fa"
+            },
+            {
+              "name": "3\" x 3\"",
+              "dimensions": "3x3",
+              "priceModifier": 0.1,
+              "_id": "69ffc4b564f2b4d530fad4fb"
+            },
+            {
+              "name": "4\" x 4\"",
+              "dimensions": "4x4",
+              "priceModifier": 0.2,
+              "_id": "69ffc4b564f2b4d530fad4fc"
+            }
+          ],
+          "finishes": [
+            {
+              "name": "Matte",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad4fd"
+            },
+            {
+              "name": "Glossy",
+              "priceModifier": 0.05,
+              "_id": "69ffc4b564f2b4d530fad4fe"
+            }
+          ],
+          "quantities": [],
+          "orientations": [],
+          "paperTypes": [],
+          "colors": [],
+          "roundedCorners": [],
+          "coatings": [],
+          "raisedPrint": []
+        },
+        "inStock": true,
+        "featured": true,
+        "position": 6,
+        "pricing": [],
+        "createdAt": "2026-05-09T23:35:17.383Z",
+        "updatedAt": "2026-05-09T23:35:17.383Z",
+        "__v": 0
+      },
+      {
+        "_id": "69ffc4b564f2b4d530fad4ff",
+        "name": "Postcards",
+        "description": "High-quality postcards for direct mail campaigns, event invitations, or thank you cards.",
+        "category": "postcards",
+        "basePrice": 45,
+        "imageUrl": "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003099/printing-etc/products/postcard1.jpg",
+        "images": [
+          "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003099/printing-etc/products/postcard1.jpg"
+        ],
+        "options": {
+          "quantities": [
+            {
+              "name": "500",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad500"
+            },
+            {
+              "name": "1000",
+              "priceModifier": 15,
+              "_id": "69ffc4b564f2b4d530fad501"
+            },
+            {
+              "name": "2500",
+              "priceModifier": 50,
+              "_id": "69ffc4b564f2b4d530fad502"
+            },
+            {
+              "name": "5000",
+              "priceModifier": 110,
+              "_id": "69ffc4b564f2b4d530fad503"
+            },
+            {
+              "name": "7500",
+              "priceModifier": 165,
+              "_id": "69ffc4b564f2b4d530fad504"
+            },
+            {
+              "name": "10000",
+              "priceModifier": 220,
+              "_id": "69ffc4b564f2b4d530fad505"
+            },
+            {
+              "name": "15000",
+              "priceModifier": 330,
+              "_id": "69ffc4b564f2b4d530fad506"
+            },
+            {
+              "name": "25000",
+              "priceModifier": 550,
+              "_id": "69ffc4b564f2b4d530fad507"
+            }
+          ],
+          "sizes": [
+            {
+              "name": "4\" x 6\"",
+              "dimensions": "4x6",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad508"
+            },
+            {
+              "name": "5\" x 7\"",
+              "dimensions": "5x7",
+              "priceModifier": 15,
+              "_id": "69ffc4b564f2b4d530fad509"
+            },
+            {
+              "name": "6\" x 9\"",
+              "dimensions": "6x9",
+              "priceModifier": 25,
+              "_id": "69ffc4b564f2b4d530fad50a"
+            },
+            {
+              "name": "6\" x 11\"",
+              "dimensions": "6x11",
+              "priceModifier": 30,
+              "_id": "69ffc4b564f2b4d530fad50b"
+            }
+          ],
+          "orientations": [
+            {
+              "name": "Horizontal",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad50c"
+            },
+            {
+              "name": "Vertical",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad50d"
+            }
+          ],
+          "paperTypes": [
+            {
+              "name": "14pt Gloss Cover",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad50e"
+            },
+            {
+              "name": "14pt Uncoated Cover",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad50f"
+            },
+            {
+              "name": "14pt Matte Cover",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad510"
+            },
+            {
+              "name": "16pt Gloss Cover",
+              "priceModifier": 10,
+              "_id": "69ffc4b564f2b4d530fad511"
+            },
+            {
+              "name": "16pt Uncoated Cover",
+              "priceModifier": 10,
+              "_id": "69ffc4b564f2b4d530fad512"
+            },
+            {
+              "name": "13pt Premium Linen",
+              "priceModifier": 20,
+              "_id": "69ffc4b564f2b4d530fad513"
+            },
+            {
+              "name": "18pt Ultra Premium Smooth White",
+              "priceModifier": 35,
+              "_id": "69ffc4b564f2b4d530fad514"
+            }
+          ],
+          "colors": [
+            {
+              "name": "Full Color Front, No Back",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad515"
+            },
+            {
+              "name": "Full Color Front, Grayscale Back",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad516"
+            },
+            {
+              "name": "Full Color Both Sides",
+              "priceModifier": 15,
+              "_id": "69ffc4b564f2b4d530fad517"
+            }
+          ],
+          "roundedCorners": [
+            {
+              "name": "No",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad518"
+            },
+            {
+              "name": "Yes",
+              "priceModifier": 20,
+              "_id": "69ffc4b564f2b4d530fad519"
+            }
+          ],
+          "coatings": [
+            {
+              "name": "Matte Aqueous Coating - Front",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad51a"
+            },
+            {
+              "name": "Matte Aqueous Coating - Both Sides",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad51b"
+            },
+            {
+              "name": "UV Gloss Coating - Front",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad51c"
+            },
+            {
+              "name": "UV Gloss Coating - Both Sides",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad51d"
+            },
+            {
+              "name": "Spot UV Coating - Front",
+              "priceModifier": 25,
+              "_id": "69ffc4b564f2b4d530fad51e"
+            }
+          ],
+          "raisedPrint": [
+            {
+              "name": "None",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad51f"
+            },
+            {
+              "name": "Raised UV Print Front",
+              "priceModifier": 40,
+              "_id": "69ffc4b564f2b4d530fad520"
+            },
+            {
+              "name": "Raised UV Both Sides",
+              "priceModifier": 55,
+              "_id": "69ffc4b564f2b4d530fad521"
+            },
+            {
+              "name": "Raised Foil Print Front",
+              "priceModifier": 40,
+              "_id": "69ffc4b564f2b4d530fad522"
+            },
+            {
+              "name": "Raised Foil Print Both Sides",
+              "priceModifier": 55,
+              "_id": "69ffc4b564f2b4d530fad523"
+            }
+          ],
+          "finishes": []
+        },
+        "inStock": true,
+        "featured": false,
+        "position": 7,
+        "pricing": [],
+        "createdAt": "2026-05-09T23:35:17.384Z",
+        "updatedAt": "2026-05-09T23:35:17.384Z",
+        "__v": 0
+      },
+      {
+        "_id": "69ffc4b564f2b4d530fad529",
+        "name": "Door Hangers",
+        "description": "Eye-catching door hangers for direct marketing. Perfect for promotions, announcements, and advertising.",
+        "category": "door-hangers",
+        "basePrice": 0.35,
+        "imageUrl": "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003101/printing-etc/products/doorhanger.jpg",
+        "images": [
+          "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003101/printing-etc/products/doorhanger.jpg"
+        ],
+        "options": {
+          "sizes": [
+            {
+              "name": "3.5\" x 8.5\"",
+              "dimensions": "3.5x8.5",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad52a"
+            },
+            {
+              "name": "4.25\" x 11\"",
+              "dimensions": "4.25x11",
+              "priceModifier": 0.2,
+              "_id": "69ffc4b564f2b4d530fad52b"
+            }
+          ],
+          "paperTypes": [
+            {
+              "name": "Standard (100 lb)",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad52c"
+            },
+            {
+              "name": "Premium (130 lb)",
+              "priceModifier": 0.15,
+              "_id": "69ffc4b564f2b4d530fad52d"
+            }
+          ],
+          "finishes": [
+            {
+              "name": "Matte",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad52e"
+            },
+            {
+              "name": "Glossy",
+              "priceModifier": 0.1,
+              "_id": "69ffc4b564f2b4d530fad52f"
+            },
+            {
+              "name": "UV Coating",
+              "priceModifier": 0.15,
+              "_id": "69ffc4b564f2b4d530fad530"
+            }
+          ],
+          "quantities": [],
+          "orientations": [],
+          "colors": [],
+          "roundedCorners": [],
+          "coatings": [],
+          "raisedPrint": []
+        },
+        "inStock": true,
+        "featured": false,
+        "position": 9,
+        "pricing": [],
+        "createdAt": "2026-05-09T23:35:17.384Z",
+        "updatedAt": "2026-05-09T23:35:17.384Z",
+        "__v": 0
+      },
+      {
+        "_id": "69ffc4b564f2b4d530fad531",
+        "name": "Decals",
+        "description": "Durable vinyl decals for windows, vehicles, and equipment. Weather-resistant and long-lasting.",
+        "category": "decals",
+        "basePrice": 0.5,
+        "imageUrl": "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003102/printing-etc/products/windowdecal.jpg",
+        "images": [
+          "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003102/printing-etc/products/windowdecal.jpg"
+        ],
+        "options": {
+          "sizes": [
+            {
+              "name": "3\" x 3\"",
+              "dimensions": "3x3",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad532"
+            },
+            {
+              "name": "6\" x 6\"",
+              "dimensions": "6x6",
+              "priceModifier": 2,
+              "_id": "69ffc4b564f2b4d530fad533"
+            },
+            {
+              "name": "12\" x 12\"",
+              "dimensions": "12x12",
+              "priceModifier": 5,
+              "_id": "69ffc4b564f2b4d530fad534"
+            }
+          ],
+          "finishes": [
+            {
+              "name": "Matte",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad535"
+            },
+            {
+              "name": "Glossy",
+              "priceModifier": 0.5,
+              "_id": "69ffc4b564f2b4d530fad536"
+            }
+          ],
+          "quantities": [],
+          "orientations": [],
+          "paperTypes": [],
+          "colors": [],
+          "roundedCorners": [],
+          "coatings": [],
+          "raisedPrint": []
+        },
+        "inStock": true,
+        "featured": false,
+        "position": 10,
+        "pricing": [],
+        "createdAt": "2026-05-09T23:35:17.384Z",
+        "updatedAt": "2026-05-09T23:35:17.384Z",
+        "__v": 0
+      },
+      {
+        "_id": "69ffc4b564f2b4d530fad537",
+        "name": "T-shirts",
+        "description": "Custom printed t-shirts with high-quality graphics. Perfect for events, teams, and promotions.",
+        "category": "custom-printing",
+        "basePrice": 12,
+        "imageUrl": "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003102/printing-etc/products/tshirt.webp",
+        "images": [
+          "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003102/printing-etc/products/tshirt.webp"
+        ],
+        "options": {
+          "sizes": [
+            {
+              "name": "Small",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad538"
+            },
+            {
+              "name": "Medium",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad539"
+            },
+            {
+              "name": "Large",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad53a"
+            },
+            {
+              "name": "X-Large",
+              "priceModifier": 2,
+              "_id": "69ffc4b564f2b4d530fad53b"
+            },
+            {
+              "name": "2X-Large",
+              "priceModifier": 4,
+              "_id": "69ffc4b564f2b4d530fad53c"
+            }
+          ],
+          "colors": [
+            {
+              "name": "White",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad53d"
+            },
+            {
+              "name": "Black",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad53e"
+            },
+            {
+              "name": "Navy",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad53f"
+            },
+            {
+              "name": "Red",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad540"
+            }
+          ],
+          "quantities": [],
+          "orientations": [],
+          "paperTypes": [],
+          "finishes": [],
+          "roundedCorners": [],
+          "coatings": [],
+          "raisedPrint": []
+        },
+        "inStock": true,
+        "featured": false,
+        "position": 11,
+        "pricing": [],
+        "createdAt": "2026-05-09T23:35:17.385Z",
+        "updatedAt": "2026-05-09T23:35:17.385Z",
+        "__v": 0
+      },
+      {
+        "_id": "69ffc4b564f2b4d530fad541",
+        "name": "Blueprints/Floor Plans",
+        "description": "Large format architectural blueprints and floor plans. Professional printing for construction and design.",
+        "category": "custom-printing",
+        "basePrice": 3,
+        "imageUrl": "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003103/printing-etc/products/blueprints.jpg",
+        "images": [
+          "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003103/printing-etc/products/blueprints.jpg"
+        ],
+        "options": {
+          "sizes": [
+            {
+              "name": "18\" x 24\"",
+              "dimensions": "18x24",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad542"
+            },
+            {
+              "name": "24\" x 36\"",
+              "dimensions": "24x36",
+              "priceModifier": 2,
+              "_id": "69ffc4b564f2b4d530fad543"
+            },
+            {
+              "name": "36\" x 48\"",
+              "dimensions": "36x48",
+              "priceModifier": 5,
+              "_id": "69ffc4b564f2b4d530fad544"
+            }
+          ],
+          "paperTypes": [
+            {
+              "name": "Standard Bond",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad545"
+            },
+            {
+              "name": "Vellum",
+              "priceModifier": 1,
+              "_id": "69ffc4b564f2b4d530fad546"
+            },
+            {
+              "name": "Mylar",
+              "priceModifier": 3,
+              "_id": "69ffc4b564f2b4d530fad547"
+            }
+          ],
+          "quantities": [],
+          "orientations": [],
+          "finishes": [],
+          "colors": [],
+          "roundedCorners": [],
+          "coatings": [],
+          "raisedPrint": []
+        },
+        "inStock": true,
+        "featured": false,
+        "position": 12,
+        "pricing": [],
+        "createdAt": "2026-05-09T23:35:17.385Z",
+        "updatedAt": "2026-05-09T23:35:17.385Z",
+        "__v": 0
+      },
+      {
+        "_id": "69ffc4b564f2b4d530fad548",
+        "name": "Car Magnets",
+        "description": "Durable vehicle magnets for advertising and promotions. Weather-resistant and easy to apply.",
+        "category": "custom-printing",
+        "basePrice": 25,
+        "imageUrl": "https://res.cloudinary.com/dlonvpwii/image/upload/v1775413781/carmagnet_nvsit6.webp",
+        "images": [
+          "https://res.cloudinary.com/dlonvpwii/image/upload/v1775413781/carmagnet_nvsit6.webp"
+        ],
+        "options": {
+          "quantities": [
+            {
+              "name": "1",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad549"
+            },
+            {
+              "name": "2",
+              "priceModifier": 20,
+              "_id": "69ffc4b564f2b4d530fad54a"
+            },
+            {
+              "name": "5",
+              "priceModifier": 45,
+              "_id": "69ffc4b564f2b4d530fad54b"
+            },
+            {
+              "name": "10",
+              "priceModifier": 85,
+              "_id": "69ffc4b564f2b4d530fad54c"
+            },
+            {
+              "name": "25",
+              "priceModifier": 200,
+              "_id": "69ffc4b564f2b4d530fad54d"
+            },
+            {
+              "name": "50",
+              "priceModifier": 375,
+              "_id": "69ffc4b564f2b4d530fad54e"
+            }
+          ],
+          "sizes": [
+            {
+              "name": "12\" x 18\"",
+              "dimensions": "12x18",
+              "priceModifier": 0,
+              "_id": "69ffc4b564f2b4d530fad54f"
+            },
+            {
+              "name": "12\" x 24\"",
+              "dimensions": "12x24",
+              "priceModifier": 10,
+              "_id": "69ffc4b564f2b4d530fad550"
+            },
+            {
+              "name": "18\" x 24\"",
+              "dimensions": "18x24",
+              "priceModifier": 20,
+              "_id": "69ffc4b564f2b4d530fad551"
+            }
+          ],
+          "orientations": [],
+          "paperTypes": [],
+          "finishes": [],
+          "colors": [],
+          "roundedCorners": [],
+          "coatings": [],
+          "raisedPrint": []
+        },
+        "inStock": true,
+        "featured": false,
+        "position": 13,
+        "pricing": [],
+        "createdAt": "2026-05-09T23:35:17.385Z",
+        "updatedAt": "2026-05-09T23:35:17.385Z",
+        "__v": 0
+      }
+    ],
+    "users": [
+      {
+        "_id": "69d079e326be580babf9d3b6",
+        "email": "williamhasrouty@yahoo.com",
+        "name": "William Hasrouty",
+        "role": "admin",
+        "addresses": [],
+        "createdAt": "2026-04-04T02:39:31.864Z",
+        "__v": 0
+      },
+      {
+        "_id": "69d1a69a6d9feb90d0666b5c",
+        "email": "dabs@dabs.com",
+        "name": "DABS",
+        "phone": "5555555555",
+        "role": "customer",
+        "addresses": [],
+        "createdAt": "2026-04-05T00:02:34.244Z",
+        "__v": 0
+      },
+      {
+        "_id": "69d9b9cb82dbc3baebb3e5f5",
+        "email": "williamjhasrouty@gmail.com",
+        "name": "Will JH",
+        "phone": "6618780088",
+        "role": "customer",
+        "addresses": [],
+        "createdAt": "2026-04-11T03:02:35.365Z",
+        "__v": 0
+      }
+    ],
+    "orders": [
+      {
+        "_id": "69f53e501d48e5ab593d900c",
+        "orderNumber": "ORD-1777679952906-69F7LWL1V",
+        "user": "69d1a69a6d9feb90d0666b5c",
+        "items": [
+          {
+            "product": "69f3f390813a645c6eef4d09",
+            "productName": "Business Cards",
+            "productImage": "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003091/printing-etc/products/business-card-stock.png",
+            "productCategory": "business-cards",
+            "quantity": 1,
+            "selectedOptions": {
+              "paperType": "16pt Gloss",
+              "quantity": 500,
+              "size": "2x3.5",
+              "orientation": "horizontal",
+              "color": "Full Color Front, No Back",
+              "roundedCorner": "none",
+              "coating": "UV Gloss Coating - Front",
+              "raisedPrint": "None",
+              "velvetFinish": "None",
+              "finish": "",
+              "zipCode": "",
+              "addressType": "residential"
+            },
+            "customizations": {
+              "files": [
+                {
+                  "url": "https://res.cloudinary.com/dlonvpwii/image/upload/v1777679951/printing-etc/uploads/20_1777679950787.jpg",
+                  "name": "20.jpg",
+                  "uploadedAt": "2026-05-01T23:59:12.910Z",
+                  "_id": "69f53e501d48e5ab593d900e"
+                }
+              ]
+            },
+            "price": 35,
+            "totalPrice": 35,
+            "_id": "69f53e501d48e5ab593d900d"
+          }
+        ],
+        "subtotal": 35,
+        "discount": {
+          "code": null,
+          "amount": 0
+        },
+        "tax": 3.94,
+        "shipping": 0,
+        "deliveryMethod": "pickup",
+        "total": 38.94,
+        "shippingAddress": {
+          "street": "1747 E Ave Q Ste B2",
+          "city": "Palmdale",
+          "state": "CA",
+          "zipCode": "93550",
+          "country": "USA"
+        },
+        "paymentInfo": {
+          "method": "card",
+          "status": "pending"
+        },
+        "status": "pending",
+        "notes": "",
+        "createdAt": "2026-05-01T23:59:12.911Z",
+        "updatedAt": "2026-05-01T23:59:12.912Z",
+        "__v": 0
+      },
+      {
+        "_id": "69fa7316116e23237d727f21",
+        "orderNumber": "ORD-1778021142129-FF1EKASLG",
+        "guestInfo": {
+          "name": "WH",
+          "email": "wh@wh.com",
+          "phone": "(555) 555-5555"
+        },
+        "items": [
+          {
+            "product": "69f3f390813a645c6eef4d09",
+            "productName": "Business Cards",
+            "productImage": "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003091/printing-etc/products/business-card-stock.png",
+            "productCategory": "business-cards",
+            "quantity": 1,
+            "selectedOptions": {
+              "paperType": "16pt Gloss",
+              "quantity": 500,
+              "size": "2x3.5",
+              "orientation": "horizontal",
+              "color": "Full Color Front, No Back",
+              "roundedCorner": "none",
+              "coating": "UV Gloss Coating - Front",
+              "raisedPrint": "None",
+              "velvetFinish": "None",
+              "finish": "",
+              "zipCode": "",
+              "addressType": "residential"
+            },
+            "customizations": {
+              "files": [
+                {
+                  "url": "https://res.cloudinary.com/dlonvpwii/image/upload/v1778021141/printing-etc/uploads/IMG_1779_1778021138837.jpg",
+                  "name": "IMG_1779.jpeg",
+                  "uploadedAt": "2026-05-05T22:45:42.135Z",
+                  "_id": "69fa7316116e23237d727f23"
+                }
+              ]
+            },
+            "price": 35,
+            "totalPrice": 35,
+            "_id": "69fa7316116e23237d727f22"
+          }
+        ],
+        "subtotal": 35,
+        "discount": {
+          "code": null,
+          "amount": 0
+        },
+        "tax": 3.94,
+        "shipping": 0,
+        "deliveryMethod": "pickup",
+        "total": 38.94,
+        "shippingAddress": {
+          "street": "1747 E Ave Q Ste B2",
+          "city": "Palmdale",
+          "state": "CA",
+          "zipCode": "93550",
+          "country": "USA"
+        },
+        "paymentInfo": {
+          "method": "card",
+          "status": "pending"
+        },
+        "status": "pending",
+        "notes": "",
+        "createdAt": "2026-05-05T22:45:42.139Z",
+        "updatedAt": "2026-05-05T22:45:42.143Z",
+        "__v": 0
+      }
+    ]
+  },
+  "counts": {
+    "products": 12,
+    "users": 3,
+    "orders": 2
+  }
+}
