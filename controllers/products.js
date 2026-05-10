@@ -108,11 +108,25 @@ const updateProduct = (req, res, next) => {
   if (basePrice !== undefined) updateData.basePrice = basePrice;
   if (imageUrl !== undefined) updateData.imageUrl = imageUrl;
   if (images !== undefined) updateData.images = images;
-  if (options !== undefined) updateData.options = options;
   if (pricing !== undefined) updateData.pricing = pricing;
   if (position !== undefined) updateData.position = position;
   if (inStock !== undefined) updateData.inStock = inStock;
   if (featured !== undefined) updateData.featured = featured;
+
+  // Handle options specially to ensure nested arrays are properly replaced, not merged
+  // We need to explicitly set each option field to ensure empty arrays clear the data
+  if (options !== undefined) {
+    updateData["options.quantities"] = options.quantities || [];
+    updateData["options.sizes"] = options.sizes || [];
+    updateData["options.orientations"] = options.orientations || [];
+    updateData["options.paperTypes"] = options.paperTypes || [];
+    updateData["options.finishes"] = options.finishes || [];
+    updateData["options.colors"] = options.colors || [];
+    updateData["options.roundedCorners"] = options.roundedCorners || [];
+    updateData["options.coatings"] = options.coatings || [];
+    updateData["options.raisedPrint"] = options.raisedPrint || [];
+    updateData["options.customOptions"] = options.customOptions || {};
+  }
 
   Product.findByIdAndUpdate(productId, updateData, {
     new: true,
