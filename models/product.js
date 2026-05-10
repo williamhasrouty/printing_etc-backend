@@ -161,6 +161,21 @@ const productSchema = new mongoose.Schema({
       },
     },
   ],
+  pricingTable: {
+    enabled: {
+      type: Boolean,
+      default: false,
+    },
+    variants: [
+      {
+        variantName: String, // e.g., "100lb Gloss", "14pt Matte", "Vinyl Material"
+        variantId: String, // Slug/ID for matching with product options
+        rows: [String], // Size options: ["4x6", "5x7", "8.5x11"]
+        columns: [Number], // Quantity options: [250, 500, 1000]
+        prices: mongoose.Schema.Types.Mixed, // Object with keys like "4x6-250": 79
+      },
+    ],
+  },
   inStock: {
     type: Boolean,
     default: true,

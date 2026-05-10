@@ -84,6 +84,13 @@ const createProduct = (req, res, next) => {
 // Update a product (admin only - will add admin middleware later)
 const updateProduct = (req, res, next) => {
   const { productId } = req.params;
+  console.log("=== UPDATE PRODUCT DEBUG ===");
+  console.log("Product ID from params:", productId);
+  console.log("Product ID type:", typeof productId);
+  console.log("Product ID length:", productId?.length);
+  console.log("Is valid hex:", /^[0-9a-fA-F]{24}$/.test(productId));
+  console.log("=== END DEBUG ===");
+
   const {
     name,
     description,
@@ -93,6 +100,7 @@ const updateProduct = (req, res, next) => {
     images,
     options,
     pricing,
+    pricingTable,
     position,
     inStock,
     featured,
@@ -109,6 +117,7 @@ const updateProduct = (req, res, next) => {
   if (imageUrl !== undefined) updateData.imageUrl = imageUrl;
   if (images !== undefined) updateData.images = images;
   if (pricing !== undefined) updateData.pricing = pricing;
+  if (pricingTable !== undefined) updateData.pricingTable = pricingTable;
   if (position !== undefined) updateData.position = position;
   if (inStock !== undefined) updateData.inStock = inStock;
   if (featured !== undefined) updateData.featured = featured;
@@ -128,6 +137,8 @@ const updateProduct = (req, res, next) => {
     updateData["options.customOptions"] = options.customOptions || {};
   }
 
+  console.log("Update data:", JSON.stringify(updateData, null, 2));
+
   Product.findByIdAndUpdate(productId, updateData, {
     new: true,
     runValidators: true,
@@ -139,6 +150,14 @@ const updateProduct = (req, res, next) => {
       res.send(product);
     })
     .catch((err) => {
+      console.log("=== MONGOOSE ERROR ===");
+      console.log("Error name:", err.name);
+      console.log("Error message:", err.message);
+      console.log("Error path:", err.path);
+      console.log("Error value:", err.value);
+      console.log("Full error:", err);
+      console.log("=== END ERROR ===");
+
       if (err.name === "CastError") {
         next(new BadRequestError("Invalid product ID"));
       } else if (err.name === "ValidationError") {

@@ -177,6 +177,18 @@ const validateCreateProduct = celebrate({
           price: Joi.number().required().min(0),
         }),
     ),
+    pricingTable: Joi.object().keys({
+      enabled: Joi.boolean(),
+      variants: Joi.array().items(
+        Joi.object().keys({
+          variantName: Joi.string().allow(""),
+          variantId: Joi.string().allow(""),
+          rows: Joi.array().items(Joi.string()),
+          columns: Joi.array().items(Joi.number()),
+          prices: Joi.object().unknown(true),
+        }),
+      ),
+    }),
     position: Joi.number().integer().min(0),
     inStock: Joi.boolean(),
     featured: Joi.boolean(),
@@ -301,6 +313,18 @@ const validateUpdateProduct = celebrate({
           price: Joi.number().required().min(0),
         }),
     ),
+    pricingTable: Joi.object().keys({
+      enabled: Joi.boolean(),
+      variants: Joi.array().items(
+        Joi.object().keys({
+          variantName: Joi.string().allow(""),
+          variantId: Joi.string().allow(""),
+          rows: Joi.array().items(Joi.string()),
+          columns: Joi.array().items(Joi.number()),
+          prices: Joi.object().unknown(true),
+        }),
+      ),
+    }),
     position: Joi.number().integer().min(0),
     inStock: Joi.boolean(),
     featured: Joi.boolean(),
