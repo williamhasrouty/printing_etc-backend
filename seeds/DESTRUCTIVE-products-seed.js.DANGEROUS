@@ -459,9 +459,9 @@ const sampleProducts = [
     category: "decals",
     basePrice: 0.5,
     imageUrl:
-      "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003102/printing-etc/products/windowdecal.jpg",
+      "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003102/printing-etc/products/window-decal.jpg",
     images: [
-      "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003102/printing-etc/products/windowdecal.jpg",
+      "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003102/printing-etc/products/window-decal.jpg",
     ],
     options: {
       sizes: [

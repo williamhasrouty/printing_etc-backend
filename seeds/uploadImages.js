@@ -64,7 +64,7 @@ const imageMapping = [
   },
   {
     product: "Decals",
-    filename: "windowdecal.jpg",
+    filename: "window-decal.jpg",
     folder: "printing-etc/products",
   },
   {
