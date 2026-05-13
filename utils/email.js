@@ -82,7 +82,7 @@ const formatProductOptions = (options) => {
   });
 
   return formattedOptions.length > 0
-    ? `<br/><span style="font-size: 13px; color: #666;">${formattedOptions.join(" • ")}</span>`
+    ? `<br/><span style="font-size: 13px; color: #6f6e6e;">${formattedOptions.join(" • ")}</span>`
     : "";
 };
 
@@ -206,7 +206,7 @@ const sendOrderConfirmation = async (order, userEmail) => {
             <a href="${FRONTEND_URL}/orders/${order._id}" style="display: inline-block; background: #00b4d8; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold;">View Order Details</a>
           </div>
 
-          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e0e0e0; text-align: center; color: #666; font-size: 12px;">
+          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e0e0e0; text-align: center; color: #6f6e6e; font-size: 12px;">
             <p>Questions? Contact us at <a href="tel:6612722869" style="color: #00b4d8;">(661) 272-2869</a></p>
             <p>1747 E Ave Q Ste B2, Palmdale, CA 93550</p>
             <p style="margin-top: 15px;">© ${new Date().getFullYear()} Printing Etc. All rights reserved.</p>
@@ -285,7 +285,7 @@ const sendPaymentReceipt = async (order, userEmail) => {
             <p style="margin: 5px 0;"><strong>Order Number:</strong> ${order.orderNumber}</p>
             <p style="margin: 5px 0;"><strong>Payment Date:</strong> ${formatDate(order.updatedAt)}</p>
             <p style="margin: 5px 0;"><strong>Amount Paid:</strong> <span style="font-size: 20px; color: #28a745;"><strong>${formatCurrency(order.total)}</strong></span></p>
-            ${order.paymentInfo?.transactionId ? `<p style="margin: 5px 0; font-size: 12px; color: #666;"><strong>Transaction ID:</strong> ${order.paymentInfo.transactionId}</p>` : ""}
+            ${order.paymentInfo?.transactionId ? `<p style="margin: 5px 0; font-size: 12px; color: #6f6e6e;"><strong>Transaction ID:</strong> ${order.paymentInfo.transactionId}</p>` : ""}
           </div>
 
           <h3 style="color: #00b4d8; margin-top: 30px;">Receipt Details</h3>
@@ -342,7 +342,7 @@ const sendPaymentReceipt = async (order, userEmail) => {
             <a href="${FRONTEND_URL}/orders/${order._id}" style="display: inline-block; background: #00b4d8; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold;">Track Your Order</a>
           </div>
 
-          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e0e0e0; text-align: center; color: #666; font-size: 12px;">
+          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e0e0e0; text-align: center; color: #6f6e6e; font-size: 12px;">
             <p>Need help? Contact us at <a href="tel:6612722869" style="color: #00b4d8;">(661) 272-2869</a></p>
             <p>1747 E Ave Q Ste B2, Palmdale, CA 93550</p>
             <p style="margin-top: 15px;">© ${new Date().getFullYear()} Printing Etc. All rights reserved.</p>
@@ -497,7 +497,7 @@ const sendStatusUpdate = async (order, userEmail, previousStatus) => {
             <p style="margin: 0; font-size: 14px;"><strong>Pickup Location</strong></p>
             <p style="margin: 5px 0 0; font-size: 14px;">1747 E Ave Q Ste B2, Palmdale, CA 93550</p>
             <p style="margin: 5px 0 0; font-size: 14px;"><strong>Phone:</strong> (661) 272-2869</p>
-            <p style="margin: 10px 0 0; font-size: 13px; color: #666;">Please have your order number ready when picking up.</p>
+            <p style="margin: 10px 0 0; font-size: 13px; color: #6f6e6e;">Please have your order number ready when picking up.</p>
           </div>
           `
               : ""
@@ -507,7 +507,7 @@ const sendStatusUpdate = async (order, userEmail, previousStatus) => {
             <a href="${FRONTEND_URL}/orders/${order._id}" style="display: inline-block; background: ${config.color}; color: white; padding: 12px 30px; text-decoration: none; border-radius: 6px; font-weight: bold;">View Order Details</a>
           </div>
 
-          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e0e0e0; text-align: center; color: #666; font-size: 12px;">
+          <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e0e0e0; text-align: center; color: #6f6e6e; font-size: 12px;">
             <p>Questions? Contact us at <a href="tel:6612722869" style="color: #00b4d8;">(661) 272-2869</a></p>
             <p>1747 E Ave Q Ste B2, Palmdale, CA 93550</p>
             <p style="margin-top: 15px;">© ${new Date().getFullYear()} Printing Etc. All rights reserved.</p>
@@ -574,7 +574,7 @@ const sendPasswordResetEmail = async (userEmail, resetToken) => {
             <a href="${resetUrl}" style="background: #00b4d8; color: white; padding: 14px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 16px; display: inline-block;">Reset Password</a>
           </div>
           
-          <p style="font-size: 14px; color: #666;">Or copy and paste this link into your browser:</p>
+          <p style="font-size: 14px; color: #6f6e6e;">Or copy and paste this link into your browser:</p>
           <p style="font-size: 13px; color: #00b4d8; word-break: break-all; background: #f8f9fa; padding: 10px; border-radius: 4px;">${resetUrl}</p>
           
           <div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px;">
@@ -582,7 +582,7 @@ const sendPasswordResetEmail = async (userEmail, resetToken) => {
             <p style="margin: 5px 0 0; font-size: 14px;">This password reset link will expire in 1 hour for security reasons.</p>
           </div>
           
-          <p style="font-size: 14px; color: #666; margin-top: 30px;">If you didn't request a password reset, you can safely ignore this email. Your password will remain unchanged.</p>
+          <p style="font-size: 14px; color: #6f6e6e; margin-top: 30px;">If you didn't request a password reset, you can safely ignore this email. Your password will remain unchanged.</p>
           
           <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
             <p style="font-size: 13px; color: #999; margin: 5px 0;">Thanks,</p>
