@@ -45,6 +45,52 @@ const calculateItemPrice = (product, selectedOptions = {}, quantity = 1) => {
     }
   }
 
+  if (selectedOptions.coating && product.options?.coatings) {
+    const coatingOption = product.options.coatings.find(
+      (c) => c.name === selectedOptions.coating,
+    );
+    if (coatingOption && coatingOption.priceModifier) {
+      price += coatingOption.priceModifier;
+    }
+  }
+
+  if (selectedOptions.roundedCorners && product.options?.roundedCorners) {
+    const roundedCornersOption = product.options.roundedCorners.find(
+      (r) => r.name === selectedOptions.roundedCorners,
+    );
+    if (roundedCornersOption && roundedCornersOption.priceModifier) {
+      price += roundedCornersOption.priceModifier;
+    }
+  }
+
+  if (selectedOptions.raisedPrint && product.options?.raisedPrint) {
+    const raisedPrintOption = product.options.raisedPrint.find(
+      (r) => r.name === selectedOptions.raisedPrint,
+    );
+    if (raisedPrintOption && raisedPrintOption.priceModifier) {
+      price += raisedPrintOption.priceModifier;
+    }
+  }
+
+  // Apply 50% upcharge for postcards with Spot UV Coating
+  if (
+    product.category === "postcards" &&
+    selectedOptions.coating &&
+    selectedOptions.coating.includes("Spot UV")
+  ) {
+    price = price * 1.5;
+  }
+
+  // Apply 50% upcharge for postcards with raised print
+  if (
+    product.category === "postcards" &&
+    selectedOptions.raisedPrint &&
+    selectedOptions.raisedPrint !== "None" &&
+    !selectedOptions.raisedPrint.toLowerCase().includes("none")
+  ) {
+    price = price * 1.5;
+  }
+
   const totalPrice = price * quantity;
 
   return {
