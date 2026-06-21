@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-21T18:21:52.371Z",
+  "timestamp": "2026-06-21T17:27:43.684Z",
   "collections": {
     "products": [
       {
@@ -511,7 +511,7 @@
         "name": "Stickers",
         "description": "Custom stickers in any shape or size. Perfect for branding, packaging, and promotions.",
         "category": "stickers",
-        "basePrice": 75,
+        "basePrice": 0.2,
         "imageUrl": "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003096/printing-etc/products/sticker-stock-photo.jpg",
         "images": [
           "https://res.cloudinary.com/dlonvpwii/image/upload/v1775003096/printing-etc/products/sticker-stock-photo.jpg"
@@ -520,399 +520,54 @@
           "quantities": [],
           "sizes": [
             {
-              "name": "1.5\" x 1.5\" ",
-              "dimensions": "1.5x1.5",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f916a"
-            },
-            {
               "name": "2\" x 2\"",
               "dimensions": "2x2",
               "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f916b"
-            },
-            {
-              "name": "2.5\" x 2.5\"",
-              "dimensions": "2.5x2.5",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f916c"
+              "_id": "69ffc4b564f2b4d530fad4fa"
             },
             {
               "name": "3\" x 3\"",
               "dimensions": "3x3",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f916d"
-            },
-            {
-              "name": "3.5\" x 3.5\"",
-              "dimensions": "3.5x3.5",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f916e"
+              "priceModifier": 0.1,
+              "_id": "69ffc4b564f2b4d530fad4fb"
             },
             {
               "name": "4\" x 4\"",
               "dimensions": "4x4",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f916f"
-            },
-            {
-              "name": "4.5\" x 4.5\"",
-              "dimensions": "4.5x4.5",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f9170"
-            },
-            {
-              "name": "5.5\" x 5.5\"",
-              "dimensions": "5.5x5.5",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f9171"
-            },
-            {
-              "name": "6\" x 6\"",
-              "dimensions": "6x6",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f9172"
-            },
-            {
-              "name": "1\" x 3\"",
-              "dimensions": "1x3",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f9173"
-            },
-            {
-              "name": "1.5\" x 3",
-              "dimensions": "1.5x3",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f9174"
-            },
-            {
-              "name": "1.5\" x 2.5\"",
-              "dimensions": "1.5x2.5",
-              "priceModifier": 0,
-              "_id": "6a382b10a8cd6da1ff1552af"
-            },
-            {
-              "name": "2\" x 3.5\"",
-              "dimensions": "2x3.5",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f9175"
-            },
-            {
-              "name": "2\" x 4\"",
-              "dimensions": "2x4",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f9176"
-            },
-            {
-              "name": "2\" x 5\" ",
-              "dimensions": "2x5",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f9177"
-            },
-            {
-              "name": "2\" x 6\" ",
-              "dimensions": "2x6",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f9178"
-            },
-            {
-              "name": "2\" x 8\" ",
-              "dimensions": "2x8",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f9179"
-            },
-            {
-              "name": "3\" x 4\"",
-              "dimensions": "3x4",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f917a"
-            },
-            {
-              "name": "3\" x 5\"",
-              "dimensions": "3x5",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f917b"
-            },
-            {
-              "name": "3\" x 6\"",
-              "dimensions": "3x6",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f917c"
-            },
-            {
-              "name": "3\" x 9\"",
-              "dimensions": "3x9",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f917d"
-            },
-            {
-              "name": "4\" x 6\"",
-              "dimensions": "4x6",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f917e"
-            },
-            {
-              "name": "4\" x 8\"",
-              "dimensions": "4x8",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f917f"
-            },
-            {
-              "name": "4\" x 9\"",
-              "dimensions": "4x9",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f9180"
-            },
-            {
-              "name": "5\" x 8\"",
-              "dimensions": "5x8",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f9181"
-            },
-            {
-              "name": "6\" x 9\"",
-              "dimensions": "6x9",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f9182"
+              "priceModifier": 0.2,
+              "_id": "69ffc4b564f2b4d530fad4fc"
             }
           ],
           "orientations": [],
-          "paperTypes": [
+          "paperTypes": [],
+          "finishes": [
             {
-              "name": "60 lb. Gloss Label with UV Coating",
+              "name": "Matte",
               "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f9183"
+              "_id": "69ffc4b564f2b4d530fad4fd"
             },
             {
-              "name": "60 lb. Uncoated Label (Matte)",
-              "priceModifier": 0,
-              "_id": "6a382a9f2cc15b0de12f9184"
+              "name": "Glossy",
+              "priceModifier": 0.05,
+              "_id": "69ffc4b564f2b4d530fad4fe"
             }
           ],
-          "finishes": [],
           "colors": [],
           "roundedCorners": [],
           "coatings": [],
-          "raisedPrint": [],
-          "customOptions": {
-            "shape": {
-              "label": "Shape",
-              "options": [
-                {
-                  "name": "Square",
-                  "priceModifier": 0
-                },
-                {
-                  "name": "Circle",
-                  "priceModifier": 0
-                },
-                {
-                  "name": "Rectangle",
-                  "priceModifier": 0
-                },
-                {
-                  "name": "Oval",
-                  "priceModifier": 0
-                },
-                {
-                  "name": "Custom Die-Cut (Call to order)",
-                  "priceModifier": 0
-                }
-              ]
-            }
-          }
+          "raisedPrint": []
         },
         "pricing": [],
         "pricingTable": {
-          "enabled": true,
-          "variants": [
-            {
-              "variantName": "Square",
-              "variantId": "square",
-              "rows": [
-                "2x2",
-                "3x3",
-                "3.5x3.5",
-                "4.5x4.5",
-                "5.5x5.5"
-              ],
-              "columns": [
-                100,
-                250,
-                500,
-                1000,
-                2500,
-                5000
-              ],
-              "prices": {
-                "2x2-100": 75,
-                "2x2-250": 90,
-                "2x2-500": 105,
-                "3x3-100": 90,
-                "3x3-250": 105,
-                "3x3-500": 130,
-                "3.5x3.5-100": 105,
-                "3.5x3.5-250": 120,
-                "3.5x3.5-500": 150,
-                "4.5x4.5-100": 110,
-                "4.5x4.5-250": 145,
-                "4.5x4.5-500": 170,
-                "5.5x5.5-100": 125,
-                "5.5x5.5-250": 165,
-                "5.5x5.5-500": 195
-              },
-              "_id": "6a382a9f2cc15b0de12f9166"
-            },
-            {
-              "variantName": "Circle",
-              "variantId": "circle",
-              "rows": [
-                "1.5x1.5",
-                "2x2",
-                "2.5x2.5",
-                "3x3",
-                "4x4",
-                "6x6"
-              ],
-              "columns": [
-                100,
-                250,
-                500,
-                1000,
-                2500,
-                5000
-              ],
-              "prices": {
-                "1.5x1.5-100": 115,
-                "1.5x1.5-250": 125,
-                "1.5x1.5-500": 150,
-                "2x2-100": 120,
-                "2x2-250": 150,
-                "2x2-500": 175,
-                "2.5x2.5-100": 130,
-                "2.5x2.5-250": 175,
-                "2.5x2.5-500": 200,
-                "3x3-100": 140,
-                "3x3-250": 180,
-                "3x3-500": 225,
-                "4x4-100": 150,
-                "4x4-250": 195,
-                "4x4-500": 260,
-                "6x6-100": 175,
-                "6x6-250": 225,
-                "6x6-500": 295
-              },
-              "_id": "6a382a9f2cc15b0de12f9167"
-            },
-            {
-              "variantName": "Rectangle",
-              "variantId": "rectangle",
-              "rows": [
-                "1x3",
-                "1.5x3",
-                "2x3.5",
-                "2x4",
-                "2x5",
-                "2x6",
-                "2x8",
-                "3x4",
-                "3x5",
-                "3x6",
-                "3x9",
-                "4x6",
-                "4x8",
-                "4x9",
-                "5x8",
-                "6x9"
-              ],
-              "columns": [
-                100,
-                250,
-                500,
-                1000,
-                2500,
-                5000
-              ],
-              "prices": {
-                "1x3-100": 80,
-                "1x3-250": 90,
-                "1.5x3-100": 85,
-                "1.5x3-250": 95,
-                "2x3.5-100": 90,
-                "2x3.5-250": 99,
-                "2x4-100": 99,
-                "2x4-250": 115,
-                "2x5-100": 105,
-                "2x5-250": 125,
-                "2x6-100": 110,
-                "2x6-250": 130,
-                "2x8-100": 115,
-                "2x8-250": 140,
-                "3x4-100": 105,
-                "3x4-250": 125,
-                "3x4-500": 160,
-                "3x5-100": 110,
-                "3x5-250": 130,
-                "3x5-500": 175,
-                "3x6-100": 115,
-                "3x6-250": 140,
-                "3x6-500": 185,
-                "3x9-100": 120,
-                "3x9-250": 155,
-                "3x9-500": 190,
-                "3x9-1000": 0,
-                "4x6-100": 115,
-                "4x6-250": 140,
-                "4x6-500": 185,
-                "4x8-100": 120,
-                "4x8-250": 155,
-                "4x8-500": 190,
-                "4x9-100": 130,
-                "4x9-250": 165,
-                "4x9-500": 200,
-                "5x8-100": 140,
-                "5x8-250": 175,
-                "5x8-500": 210,
-                "6x9-100": 155,
-                "6x9-250": 190,
-                "6x9-500": 225
-              },
-              "_id": "6a382a9f2cc15b0de12f9168"
-            },
-            {
-              "variantName": "Oval",
-              "variantId": "oval",
-              "rows": [
-                "1.5x2.5",
-                "2x3.5",
-                "4x6"
-              ],
-              "columns": [
-                100,
-                250,
-                500,
-                1000,
-                2500,
-                5000
-              ],
-              "prices": {
-                "1.5x2.5-100": 125,
-                "1.5x2.5-250": 135,
-                "2x3.5-100": 135,
-                "2x3.5-250": 150,
-                "4x6-100": 150,
-                "4x6-250": 180
-              },
-              "_id": "6a382a9f2cc15b0de12f9169"
-            }
-          ]
+          "enabled": false,
+          "variants": []
         },
         "inStock": true,
         "featured": true,
         "position": 11,
         "createdAt": "2026-05-09T23:35:17.383Z",
-        "updatedAt": "2026-06-21T18:21:44.523Z",
-        "__v": 2
+        "updatedAt": "2026-06-21T03:35:21.385Z",
+        "__v": 0
       },
       {
         "_id": "69ffc4b564f2b4d530fad4ff",
@@ -1372,52 +1027,52 @@
             {
               "name": "1",
               "priceModifier": 0,
-              "_id": "6a38206d8b638dc29e94a5d5"
+              "_id": "6a381d07856548b4e474a46d"
             },
             {
               "name": "2",
               "priceModifier": 0,
-              "_id": "6a38206d8b638dc29e94a5d6"
+              "_id": "6a381d07856548b4e474a46e"
             },
             {
               "name": "3",
               "priceModifier": 0,
-              "_id": "6a38206d8b638dc29e94a5d7"
+              "_id": "6a381d07856548b4e474a46f"
             },
             {
               "name": "4",
               "priceModifier": 0,
-              "_id": "6a38206d8b638dc29e94a5d8"
+              "_id": "6a381d07856548b4e474a470"
             },
             {
               "name": "5",
               "priceModifier": 0,
-              "_id": "6a38206d8b638dc29e94a5d9"
+              "_id": "6a381d07856548b4e474a471"
             },
             {
               "name": "6",
               "priceModifier": 0,
-              "_id": "6a38206d8b638dc29e94a5da"
+              "_id": "6a381d07856548b4e474a472"
             },
             {
               "name": "7",
               "priceModifier": 0,
-              "_id": "6a38206d8b638dc29e94a5db"
+              "_id": "6a381d07856548b4e474a473"
             },
             {
               "name": "8",
               "priceModifier": 0,
-              "_id": "6a38206d8b638dc29e94a5dc"
+              "_id": "6a381d07856548b4e474a474"
             },
             {
               "name": "9",
               "priceModifier": 0,
-              "_id": "6a38206d8b638dc29e94a5dd"
+              "_id": "6a381d07856548b4e474a475"
             },
             {
               "name": "10",
               "priceModifier": 0,
-              "_id": "6a38206d8b638dc29e94a5de"
+              "_id": "6a381d07856548b4e474a476"
             }
           ],
           "sizes": [
@@ -1425,25 +1080,25 @@
               "name": "18\" x 24\"",
               "dimensions": "18x24",
               "priceModifier": 0,
-              "_id": "6a38206d8b638dc29e94a5df"
+              "_id": "6a381d07856548b4e474a477"
             },
             {
               "name": "24\" x 36\"",
               "dimensions": "24x36",
               "priceModifier": 0,
-              "_id": "6a38206d8b638dc29e94a5e0"
+              "_id": "6a381d07856548b4e474a478"
             },
             {
               "name": "30\" x 42\"",
               "dimensions": "30x42",
               "priceModifier": 0,
-              "_id": "6a38206d8b638dc29e94a5e1"
+              "_id": "6a381d07856548b4e474a479"
             },
             {
               "name": "36\" x 48\"",
               "dimensions": "36x48",
               "priceModifier": 0,
-              "_id": "6a38206d8b638dc29e94a5e2"
+              "_id": "6a381d07856548b4e474a47a"
             }
           ],
           "orientations": [],
@@ -1453,12 +1108,12 @@
             {
               "name": "Black & White",
               "priceModifier": 0,
-              "_id": "6a38206d8b638dc29e94a5e3"
+              "_id": "6a381d07856548b4e474a47b"
             },
             {
               "name": "Full Color",
               "priceModifier": 0,
-              "_id": "6a38206d8b638dc29e94a5e4"
+              "_id": "6a381d07856548b4e474a47c"
             }
           ],
           "roundedCorners": [],
@@ -1533,7 +1188,7 @@
                 "36x48-9": 81,
                 "36x48-10": 90
               },
-              "_id": "6a38206d8b638dc29e94a5d3"
+              "_id": "6a381d07856548b4e474a46b"
             },
             {
               "variantName": "Full Color",
@@ -1598,7 +1253,7 @@
                 "36x48-9": 135,
                 "36x48-10": 150
               },
-              "_id": "6a38206d8b638dc29e94a5d4"
+              "_id": "6a381d07856548b4e474a46c"
             }
           ]
         },
@@ -1606,7 +1261,7 @@
         "featured": false,
         "position": 12,
         "createdAt": "2026-05-09T23:35:17.385Z",
-        "updatedAt": "2026-06-21T17:33:33.089Z",
+        "updatedAt": "2026-06-21T17:19:03.576Z",
         "__v": 0
       },
       {
@@ -1624,52 +1279,52 @@
             {
               "name": "1",
               "priceModifier": 0,
-              "_id": "6a3820838b638dc29e94a741"
+              "_id": "6a38186c856548b4e4749942"
             },
             {
               "name": "2",
               "priceModifier": 0,
-              "_id": "6a3820838b638dc29e94a742"
+              "_id": "6a38186c856548b4e4749943"
             },
             {
               "name": "3",
               "priceModifier": 0,
-              "_id": "6a3820838b638dc29e94a743"
+              "_id": "6a38186c856548b4e4749944"
             },
             {
               "name": "4",
               "priceModifier": 0,
-              "_id": "6a3820838b638dc29e94a744"
+              "_id": "6a38186c856548b4e4749945"
             },
             {
               "name": "5",
               "priceModifier": 0,
-              "_id": "6a3820838b638dc29e94a745"
+              "_id": "6a38186c856548b4e4749946"
             },
             {
               "name": "6",
               "priceModifier": 0,
-              "_id": "6a3820838b638dc29e94a746"
+              "_id": "6a38186c856548b4e4749947"
             },
             {
               "name": "7",
               "priceModifier": 0,
-              "_id": "6a3820838b638dc29e94a747"
+              "_id": "6a38186c856548b4e4749948"
             },
             {
               "name": "8",
               "priceModifier": 0,
-              "_id": "6a3820838b638dc29e94a748"
+              "_id": "6a38186c856548b4e4749949"
             },
             {
               "name": "9",
               "priceModifier": 0,
-              "_id": "6a3820838b638dc29e94a749"
+              "_id": "6a38186c856548b4e474994a"
             },
             {
               "name": "10",
               "priceModifier": 0,
-              "_id": "6a3820838b638dc29e94a74a"
+              "_id": "6a38186c856548b4e474994b"
             }
           ],
           "sizes": [
@@ -1677,85 +1332,85 @@
               "name": "9\" x 12\" ",
               "dimensions": "9x12",
               "priceModifier": 40,
-              "_id": "6a3820838b638dc29e94a74b"
+              "_id": "6a38186c856548b4e474994c"
             },
             {
               "name": "9\" x 18\"",
               "dimensions": "9x18",
               "priceModifier": 50,
-              "_id": "6a3820838b638dc29e94a74c"
+              "_id": "6a38186c856548b4e474994d"
             },
             {
               "name": "9\" x 24\" ",
               "dimensions": "9x24",
               "priceModifier": 60,
-              "_id": "6a3820838b638dc29e94a74d"
+              "_id": "6a38186c856548b4e474994e"
             },
             {
               "name": "12\" x 12\"",
               "dimensions": "12x12",
               "priceModifier": 45,
-              "_id": "6a3820838b638dc29e94a74e"
+              "_id": "6a38186c856548b4e474994f"
             },
             {
               "name": "12\" x 18\"",
               "dimensions": "12x18",
               "priceModifier": 65,
-              "_id": "6a3820838b638dc29e94a74f"
+              "_id": "6a38186c856548b4e4749950"
             },
             {
               "name": "12\" x 24\"",
               "dimensions": "12x24",
               "priceModifier": 75,
-              "_id": "6a3820838b638dc29e94a750"
+              "_id": "6a38186c856548b4e4749951"
             },
             {
               "name": "12\" x 28\"",
               "dimensions": "12x28",
               "priceModifier": 80,
-              "_id": "6a3820838b638dc29e94a751"
+              "_id": "6a38186c856548b4e4749952"
             },
             {
               "name": "14\" x 20\" ",
               "dimensions": "14x20",
               "priceModifier": 85,
-              "_id": "6a3820838b638dc29e94a752"
+              "_id": "6a38186c856548b4e4749953"
             },
             {
               "name": "14\" x 24\"",
               "dimensions": "14x24 ",
               "priceModifier": 95,
-              "_id": "6a3820838b638dc29e94a753"
+              "_id": "6a38186c856548b4e4749954"
             },
             {
               "name": "14\" x 36\"",
               "dimensions": "14x36",
               "priceModifier": 130,
-              "_id": "6a3820838b638dc29e94a754"
+              "_id": "6a38186c856548b4e4749955"
             },
             {
               "name": "16\" x 24\"",
               "dimensions": "16x24",
               "priceModifier": 115,
-              "_id": "6a3820838b638dc29e94a755"
+              "_id": "6a38186c856548b4e4749956"
             },
             {
               "name": "18\" x 24\"",
               "dimensions": "18x24",
               "priceModifier": 125,
-              "_id": "6a3820838b638dc29e94a756"
+              "_id": "6a38186c856548b4e4749957"
             },
             {
               "name": "24\" x 24\" ",
               "dimensions": "24x24",
               "priceModifier": 145,
-              "_id": "6a3820838b638dc29e94a757"
+              "_id": "6a38186c856548b4e4749958"
             },
             {
               "name": "24\" x 36\"",
               "dimensions": "24x36",
               "priceModifier": 170,
-              "_id": "6a3820838b638dc29e94a758"
+              "_id": "6a38186c856548b4e4749959"
             }
           ],
           "orientations": [],
@@ -1776,7 +1431,7 @@
         "featured": false,
         "position": 5,
         "createdAt": "2026-05-09T23:35:17.385Z",
-        "updatedAt": "2026-06-21T17:33:55.261Z",
+        "updatedAt": "2026-06-21T16:59:24.645Z",
         "__v": 0
       },
       {

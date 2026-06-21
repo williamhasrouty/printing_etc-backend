@@ -1,3 +1,40 @@
+// ⚠️⚠️⚠️ CRITICAL WARNING ⚠️⚠️⚠️
+// THIS SCRIPT WILL DELETE ALL YOUR MANUALLY ENTERED DATA!
+// 
+// This file is DISABLED and should NEVER be run!
+// If you run this, you will LOSE ALL prices and products 
+// entered through the admin dashboard.
+//
+// To prevent accidental execution:
+// 1. This file has .DISABLED extension
+// 2. Safety check below will abort unless you set CONFIRM_ERASE_ALL_DATA=YES
+// 3. You should use the admin dashboard instead
+//
+// IF YOU REALLY NEED TO RUN THIS (YOU DON'T):
+// 1. Remove the .DISABLED extension
+// 2. Run: CONFIRM_ERASE_ALL_DATA=YES node seeds/DANGEROUS-WILL-ERASE-DATA-products-seed.js
+// 3. All your manual work will be lost forever
+// ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️
+
+// SAFETY CHECK - Prevent accidental execution
+if (process.env.CONFIRM_ERASE_ALL_DATA !== 'YES') {
+  console.error('\n❌ BLOCKED: This seed script is DISABLED\n');
+  console.error('This script will ERASE ALL your manual data!');
+  console.error('Use the admin dashboard to manage products instead.\n');
+  console.error('If you REALLY want to run this (NOT recommended):');
+  console.error('CONFIRM_ERASE_ALL_DATA=YES node seeds/DANGEROUS-WILL-ERASE-DATA-products-seed.js\n');
+  process.exit(1);
+}
+
+console.error('\n⚠️  WARNING: About to ERASE ALL PRODUCTS from database...');
+console.error('⚠️  All your manual prices and changes will be LOST!');
+console.error('⚠️  Waiting 5 seconds... Press Ctrl+C to cancel!\n');
+
+// Give time to cancel
+setTimeout(() => {
+  console.error('Proceeding with database wipe...\n');
+}, 5000);
+
 const mongoose = require("mongoose");
 const Product = require("../models/product");
 const config = require("../config/config");

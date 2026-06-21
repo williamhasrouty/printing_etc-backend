@@ -1,4 +1,115 @@
 /**
+ * Calculate price using pricing table based on color variant, size, and quantity
+ * @param {Object} product - Product document with pricingTable
+ * @param {Object} selectedOptions - Customer's selected options
+ * @param {Number} quantity - Order quantity
+ * @returns {Object} - {price, totalPrice}
+ */
+const calculatePricingTablePrice = (
+  product,
+  selectedOptions = {},
+  quantity = 1,
+) => {
+  // Determine which variant to use.
+  // Priority: shape (stickers) → color (blueprints) → first variant
+  let variant = null;
+
+  const normalize = (str) =>
+    String(str || "")
+      .trim()
+      .toLowerCase();
+
+  // Stickers: variant is determined by shape in customOptions
+  const shapeId = selectedOptions.customOptions?.shape;
+  if (shapeId && product.pricingTable.variants) {
+    variant = product.pricingTable.variants.find(
+      (v) =>
+        normalize(v.variantName) === normalize(shapeId) ||
+        normalize(v.variantId) === normalize(shapeId),
+    );
+  }
+
+  // Blueprints / other color-variant products
+  if (!variant && selectedOptions.color && product.pricingTable.variants) {
+    variant = product.pricingTable.variants.find(
+      (v) => normalize(v.variantName) === normalize(selectedOptions.color),
+    );
+    if (!variant) {
+      const colorId = selectedOptions.color
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "-");
+      variant = product.pricingTable.variants.find(
+        (v) => normalize(v.variantId) === colorId,
+      );
+    }
+  }
+
+  // Fallback: first variant
+  if (!variant && product.pricingTable.variants.length > 0) {
+    variant = product.pricingTable.variants[0];
+  }
+
+  if (!variant) {
+    return {
+      price: product.basePrice,
+      totalPrice: product.basePrice * quantity,
+    };
+  }
+
+  // Resolve size dimension from selectedOptions.size.
+  // The frontend may store the size as:
+  //   1. The exact display name  ("2\" x 2\"")
+  //   2. A slug of the name      ("2-x-2")
+  //   3. The dimensions string   ("2x2")
+  // Try all three against the product sizes.
+  const toSlug = (str) =>
+    String(str)
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "");
+
+  let sizeDimension = null;
+  if (selectedOptions.size && product.options?.sizes) {
+    const sel = selectedOptions.size;
+    const found = product.options.sizes.find(
+      (s) => s.name === sel || s.dimensions === sel || toSlug(s.name) === sel,
+    );
+    if (found) sizeDimension = found.dimensions;
+  }
+
+  // Get quantity from selectedOptions.quantity if it's a string option
+  let lookupQuantity = quantity;
+  if (selectedOptions.quantity) {
+    lookupQuantity = parseInt(selectedOptions.quantity, 10) || quantity;
+  }
+
+  // Lookup price in the table: "sizeDimension-quantity" (e.g., "18x24-1")
+  let price = product.basePrice;
+
+  if (sizeDimension && variant.prices) {
+    const priceKey = `${sizeDimension}-${lookupQuantity}`;
+    if (variant.prices[priceKey] !== undefined) {
+      price = variant.prices[priceKey];
+    }
+  }
+
+  // For pricing table products:
+  // - price from table = cost for one order of N copies
+  // - quantity parameter = how many such orders (cart quantity)
+  // - totalPrice = price × cart quantity
+  //
+  // Example: User selects "2 copies" (lookupQuantity=2), price=$4.50
+  //   - If cart quantity=1: totalPrice = $4.50 × 1 = $4.50
+  //   - If cart quantity=2: totalPrice = $4.50 × 2 = $9.00
+  const totalPrice = price * quantity;
+
+  return {
+    price: Math.round(price * 100) / 100,
+    totalPrice: Math.round(totalPrice * 100) / 100,
+  };
+};
+
+/**
  * Calculate item price based on product and selected options
  * @param {Object} product - Product document
  * @param {Object} selectedOptions - Customer's selected options
@@ -6,6 +117,14 @@
  * @returns {Object} - {price, totalPrice}
  */
 const calculateItemPrice = (product, selectedOptions = {}, quantity = 1) => {
+  // Check if product uses pricing table
+  if (
+    product.pricingTable?.enabled &&
+    product.pricingTable?.variants?.length > 0
+  ) {
+    return calculatePricingTablePrice(product, selectedOptions, quantity);
+  }
+
   let price = product.basePrice;
 
   // Add price modifiers for selected options
@@ -195,6 +314,7 @@ const getTaxRate = (address) => {
 
 module.exports = {
   calculateItemPrice,
+  calculatePricingTablePrice,
   calculateOrderTotal,
   calculateShipping,
   getTaxRate,

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-06-21T18:21:52.371Z",
+  "timestamp": "2026-06-21T18:19:09.577Z",
   "collections": {
     "products": [
       {
@@ -586,12 +586,6 @@
               "_id": "6a382a9f2cc15b0de12f9174"
             },
             {
-              "name": "1.5\" x 2.5\"",
-              "dimensions": "1.5x2.5",
-              "priceModifier": 0,
-              "_id": "6a382b10a8cd6da1ff1552af"
-            },
-            {
               "name": "2\" x 3.5\"",
               "dimensions": "2x3.5",
               "priceModifier": 0,
@@ -674,6 +668,12 @@
               "dimensions": "6x9",
               "priceModifier": 0,
               "_id": "6a382a9f2cc15b0de12f9182"
+            },
+            {
+              "name": "1.5\" x 2.5\"",
+              "dimensions": "1.5x2.5",
+              "priceModifier": 0,
+              "_id": "6a382b10a8cd6da1ff1552af"
             }
           ],
           "orientations": [],
@@ -911,8 +911,8 @@
         "featured": true,
         "position": 11,
         "createdAt": "2026-05-09T23:35:17.383Z",
-        "updatedAt": "2026-06-21T18:21:44.523Z",
-        "__v": 2
+        "updatedAt": "2026-06-21T18:18:56.994Z",
+        "__v": 1
       },
       {
         "_id": "69ffc4b564f2b4d530fad4ff",
